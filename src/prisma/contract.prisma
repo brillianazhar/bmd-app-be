@@ -1,0 +1,393 @@
+// use prisma-8
+// Contract inferred from the live database schema. Edit as needed, then run `prisma contract emit`.
+
+model AuthGroup {
+  id                   Int                    @id(map: "auth_group_pkey") @default(autoincrement())
+  name                 VarChar(150)           @unique(map: "auth_group_name_key")
+  authGroupPermissions AuthGroupPermissions[]
+  authUserGroups       AuthUserGroups[]
+
+  @@index([name], map: "auth_group_name_a6ea08ec_like")
+  @@map("auth_group")
+}
+
+model DjangoContentType {
+  id              Int              @id(map: "django_content_type_pkey") @default(autoincrement())
+  appLabel        VarChar(100)     @map("app_label")
+  _model          VarChar(100)     @map("model")
+  authPermissions AuthPermission[]
+  djangoAdminLogs DjangoAdminLog[]
+
+  @@unique([appLabel, _model], map: "django_content_type_app_label_model_76bd3d3b_uniq")
+  @@map("django_content_type")
+}
+
+model AuthPermission {
+  id                      Int                       @id(map: "auth_permission_pkey") @default(autoincrement())
+  name                    VarChar(255)
+  contentTypeId           Int                       @map("content_type_id")
+  codename                VarChar(100)
+  authGroupPermissions    AuthGroupPermissions[]
+  authUserUserPermissions AuthUserUserPermissions[]
+  contentType             DjangoContentType         @relation(fields: [contentTypeId], references: [id], map: "auth_permission_content_type_id_2f476e4b_fk_django_co")
+
+  @@unique([contentTypeId, codename], map: "auth_permission_content_type_id_codename_01ab375a_uniq")
+  @@index([contentTypeId], map: "auth_permission_content_type_id_2f476e4b")
+  @@map("auth_permission")
+}
+
+model AuthGroupPermissions {
+  id           BigInt         @id(map: "auth_group_permissions_pkey") @default(autoincrement())
+  groupId      Int            @map("group_id")
+  permissionId Int            @map("permission_id")
+  permission   AuthPermission @relation(fields: [permissionId], references: [id], map: "auth_group_permissio_permission_id_84c5c92e_fk_auth_perm")
+  group        AuthGroup      @relation(fields: [groupId], references: [id], map: "auth_group_permissions_group_id_b120cbf9_fk_auth_group_id")
+
+  @@unique([groupId, permissionId], map: "auth_group_permissions_group_id_permission_id_0cd325b0_uniq")
+  @@index([groupId], map: "auth_group_permissions_group_id_b120cbf9")
+  @@index([permissionId], map: "auth_group_permissions_permission_id_84c5c92e")
+  @@map("auth_group_permissions")
+}
+
+model AuthUser {
+  id                      Int                       @id(map: "auth_user_pkey") @default(autoincrement())
+  password                VarChar(128)
+  lastLogin               TimestamptzString?        @map("last_login")
+  isSuperuser             Boolean                   @map("is_superuser")
+  username                VarChar(150)              @unique(map: "auth_user_username_key")
+  firstName               VarChar(150)              @map("first_name")
+  lastName                VarChar(150)              @map("last_name")
+  email                   VarChar(254)
+  isStaff                 Boolean                   @map("is_staff")
+  isActive                Boolean                   @map("is_active")
+  dateJoined              TimestamptzString         @map("date_joined")
+  authUserGroups          AuthUserGroups[]
+  authUserUserPermissions AuthUserUserPermissions[]
+  djangoAdminLogs         DjangoAdminLog[]
+
+  @@index([username], map: "auth_user_username_6821ab7c_like")
+  @@map("auth_user")
+}
+
+model AuthUserGroups {
+  id      BigInt    @id(map: "auth_user_groups_pkey") @default(autoincrement())
+  userId  Int       @map("user_id")
+  groupId Int       @map("group_id")
+  group   AuthGroup @relation(fields: [groupId], references: [id], map: "auth_user_groups_group_id_97559544_fk_auth_group_id")
+  user    AuthUser  @relation(fields: [userId], references: [id], map: "auth_user_groups_user_id_6a12ed8b_fk_auth_user_id")
+
+  @@unique([userId, groupId], map: "auth_user_groups_user_id_group_id_94350c0c_uniq")
+  @@index([groupId], map: "auth_user_groups_group_id_97559544")
+  @@index([userId], map: "auth_user_groups_user_id_6a12ed8b")
+  @@map("auth_user_groups")
+}
+
+model AuthUserUserPermissions {
+  id           BigInt         @id(map: "auth_user_user_permissions_pkey") @default(autoincrement())
+  userId       Int            @map("user_id")
+  permissionId Int            @map("permission_id")
+  permission   AuthPermission @relation(fields: [permissionId], references: [id], map: "auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm")
+  user         AuthUser       @relation(fields: [userId], references: [id], map: "auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id")
+
+  @@unique([userId, permissionId], map: "auth_user_user_permissions_user_id_permission_id_14a6b632_uniq")
+  @@index([permissionId], map: "auth_user_user_permissions_permission_id_1fbb5f2c")
+  @@index([userId], map: "auth_user_user_permissions_user_id_a95ead1b")
+  @@map("auth_user_user_permissions")
+}
+
+model DjangoAdminLog {
+  id            Int                @id(map: "django_admin_log_pkey") @default(autoincrement())
+  actionTime    TimestamptzString  @map("action_time")
+  objectId      String?            @map("object_id")
+  objectRepr    VarChar(200)       @map("object_repr")
+  actionFlag    SmallInt           @map("action_flag")
+  changeMessage String             @map("change_message")
+  contentTypeId Int?               @map("content_type_id")
+  userId        Int                @map("user_id")
+  contentType   DjangoContentType? @relation(fields: [contentTypeId], references: [id], map: "django_admin_log_content_type_id_c4bce8eb_fk_django_co")
+  user          AuthUser           @relation(fields: [userId], references: [id], map: "django_admin_log_user_id_c564eba6_fk_auth_user_id")
+
+  @@index([contentTypeId], map: "django_admin_log_content_type_id_c4bce8eb")
+  @@index([userId], map: "django_admin_log_user_id_c564eba6")
+  @@check(expression: "(action_flag >= 0)", map: "django_admin_log_action_flag_check")
+  @@map("django_admin_log")
+}
+
+model DjangoMigrations {
+  id      BigInt            @id(map: "django_migrations_pkey") @default(autoincrement())
+  app     VarChar(255)
+  name    VarChar(255)
+  applied TimestamptzString
+
+  @@map("django_migrations")
+}
+
+model DjangoSession {
+  sessionKey  VarChar(40)       @id(map: "django_session_pkey") @map("session_key")
+  sessionData String            @map("session_data")
+  expireDate  TimestamptzString @map("expire_date")
+
+  @@index([expireDate], map: "django_session_expire_date_a5c62663")
+  @@index([sessionKey], map: "django_session_session_key_c0390e0f_like")
+  @@map("django_session")
+}
+
+model MasterKodebmd {
+  id             BigInt          @id(map: "master_kodebmd_pkey") @default(autoincrement())
+  kode           VarChar(50)
+  nama           VarChar(255)
+  parentId       BigInt?         @map("parent_id")
+  masterAsets    MasterAset[]
+  parent         MasterKodebmd?  @relation(name: "master_kodebmd_parent_id_5626ee89_fk_master_kodebmd_id", fields: [parentId], references: [id], map: "master_kodebmd_parent_id_5626ee89_fk_master_kodebmd_id")
+  masterKodebmds MasterKodebmd[] @relation(name: "master_kodebmd_parent_id_5626ee89_fk_master_kodebmd_id")
+
+  @@index([parentId], map: "master_kodebmd_parent_id_5626ee89")
+  @@map("master_kodebmd")
+}
+
+model MasterAset {
+  id                   BigInt                @id(map: "master_aset_pkey") @default(autoincrement())
+  namaBarang           VarChar(255)          @map("nama_barang")
+  tahun                Int
+  kondisi              VarChar(50)
+  kodeBmdId            BigInt                @map("kode_bmd_id")
+  harga                BigInt
+  keterangan           String?
+  merk                 VarChar(255)?
+  nomorRegister        Int                   @map("nomor_register")
+  kodeLengkap          VarChar(100)?         @map("kode_lengkap")
+  masterPemegangasets  MasterPemegangaset[]
+  masterServicebarangs MasterServicebarang[]
+  kodeBmd              MasterKodebmd         @relation(fields: [kodeBmdId], references: [id], map: "master_aset_kode_bmd_id_d5af848d_fk_master_kodebmd_id")
+
+  @@index([kodeBmdId], map: "master_aset_kode_bmd_id_d5af848d")
+  @@map("master_aset")
+}
+
+model MasterPegawai {
+  id                       BigInt                    @id(map: "master_pegawai_pkey") @default(autoincrement())
+  nama                     VarChar(255)
+  nip                      VarChar(18)               @unique(map: "master_pegawai_nip_key")
+  jabatan                  VarChar(100)
+  noHp                     VarChar(15)               @map("no_hp")
+  golongan                 VarChar(20)?
+  pangkat                  VarChar(100)?
+  foto                     VarChar(100)?
+  masterCutis              MasterCuti[]
+  masterCutisaldo          MasterCutisaldo?
+  masterKgbs               MasterKgb[]
+  masterKps                MasterKp[]
+  masterLogwas             MasterLogwa[]
+  masterPemegangasets      MasterPemegangaset[]
+  masterPemegangkendaraans MasterPemegangkendaraan[]
+
+  @@index([nip], map: "master_pegawai_nip_d1adc0b9_like")
+  @@map("master_pegawai")
+}
+
+model MasterCuti {
+  id             BigInt            @id(map: "master_cuti_pkey") @default(autoincrement())
+  jenis          VarChar(20)
+  tanggalMulai   DateString        @map("tanggal_mulai")
+  tanggalSelesai DateString        @map("tanggal_selesai")
+  jumlahHari     Int               @map("jumlah_hari")
+  dariN1         Int               @map("dari_n1")
+  dariN          Int               @map("dari_n")
+  dariCurrent    Int               @map("dari_current")
+  keterangan     String?
+  createdAt      TimestamptzString @map("created_at")
+  pegawaiId      BigInt            @map("pegawai_id")
+  pegawai        MasterPegawai     @relation(fields: [pegawaiId], references: [id], map: "master_cuti_pegawai_id_cc0111cf_fk_master_pegawai_id")
+
+  @@index([pegawaiId], map: "master_cuti_pegawai_id_cc0111cf")
+  @@map("master_cuti")
+}
+
+model MasterCutisaldo {
+  id        BigInt        @id(map: "master_cutisaldo_pkey") @default(autoincrement())
+  n1        Int
+  n         Int
+  current   Int
+  tahun     Int
+  pegawaiId BigInt        @unique(map: "master_cutisaldo_pegawai_id_key") @map("pegawai_id")
+  pegawai   MasterPegawai @relation(fields: [pegawaiId], references: [id], map: "master_cutisaldo_pegawai_id_34046fd1_fk_master_pegawai_id")
+
+  @@map("master_cutisaldo")
+}
+
+model MasterKendaraan {
+  id                       BigInt                    @id(map: "master_kendaraan_pkey") @default(autoincrement())
+  merk                     VarChar(100)
+  jenis                    VarChar(10)
+  platNomor                VarChar(20)               @map("plat_nomor")
+  tahun                    Int
+  noMesin                  VarChar(100)              @map("no_mesin")
+  noRangka                 VarChar(100)              @map("no_rangka")
+  masaPajak                DateString                @map("masa_pajak")
+  foto                     VarChar(100)?
+  stnk                     VarChar(100)?
+  statusBayar              Boolean                   @map("status_bayar")
+  masterPemegangkendaraans MasterPemegangkendaraan[]
+
+  @@map("master_kendaraan")
+}
+
+model MasterKgb {
+  id            BigInt        @id(map: "master_kgb_pkey") @default(autoincrement())
+  noSk          VarChar(100)  @map("no_sk")
+  tanggalSk     DateString    @map("tanggal_sk")
+  tmtKgb        DateString    @map("tmt_kgb")
+  golongan      VarChar(100)
+  masaTahun     Int           @map("masa_tahun")
+  masaBulan     Int           @map("masa_bulan")
+  gajiLama      Int           @map("gaji_lama")
+  gajiBaru      Int           @map("gaji_baru")
+  fileSk        VarChar(100)? @map("file_sk")
+  pegawaiId     BigInt        @map("pegawai_id")
+  kgbBerikutnya DateString?   @map("kgb_berikutnya")
+  pangkat       VarChar(100)?
+  pegawai       MasterPegawai @relation(fields: [pegawaiId], references: [id], map: "master_kgb_pegawai_id_10aa3f26_fk_master_pegawai_id")
+
+  @@index([pegawaiId], map: "master_kgb_pegawai_id_10aa3f26")
+  @@map("master_kgb")
+}
+
+model MasterKoderekening {
+  id        BigInt             @id(map: "master_koderekening_pkey") @default(autoincrement())
+  kode      VarChar(50)        @unique(map: "master_koderekening_kode_key")
+  kategori  VarChar(100)
+  createdAt TimestamptzString  @default(now()) @map("created_at")
+  deletedAt TimestamptzString? @map("deleted_at")
+  updatedAt TimestamptzString  @default(now()) @map("updated_at")
+
+  @@index([kode], map: "master_koderekening_kode_078999bc_like")
+  @@map("master_koderekening")
+}
+
+model MasterKp {
+  id           BigInt        @id(map: "master_kp_pkey") @default(autoincrement())
+  jenisKp      VarChar(200)  @map("jenis_kp")
+  noBkn        VarChar(100)? @map("no_bkn")
+  tanggalBkn   DateString?   @map("tanggal_bkn")
+  noSk         VarChar(100)  @map("no_sk")
+  tanggalSk    DateString    @map("tanggal_sk")
+  tmtKp        DateString    @map("tmt_kp")
+  golongan     VarChar(10)
+  pangkat      VarChar(100)
+  masaTahun    Int           @map("masa_tahun")
+  masaBulan    Int           @map("masa_bulan")
+  gaji         Int
+  fileSk       VarChar(100)? @map("file_sk")
+  kpBerikutnya DateString?   @map("kp_berikutnya")
+  pegawaiId    BigInt        @map("pegawai_id")
+  pegawai      MasterPegawai @relation(fields: [pegawaiId], references: [id], map: "master_kp_pegawai_id_79f16391_fk_master_pegawai_id")
+
+  @@index([pegawaiId], map: "master_kp_pegawai_id_79f16391")
+  @@map("master_kp")
+}
+
+model MasterLogwa {
+  id           BigInt            @id(map: "master_logwa_pkey") @default(autoincrement())
+  nomor        VarChar(20)
+  jenis        VarChar(10)
+  tanggalEvent DateString        @map("tanggal_event")
+  tipe         VarChar(10)
+  status       VarChar(10)
+  response     String?
+  createdAt    TimestamptzString @map("created_at")
+  pegawaiId    BigInt            @map("pegawai_id")
+  pegawai      MasterPegawai     @relation(fields: [pegawaiId], references: [id], map: "master_logwa_pegawai_id_a0e95877_fk_master_pegawai_id")
+
+  @@index([pegawaiId], map: "master_logwa_pegawai_id_a0e95877")
+  @@map("master_logwa")
+}
+
+model MasterMasterbarang {
+  id           BigInt        @id(map: "master_masterbarang_pkey") @default(autoincrement())
+  kodeRekening VarChar(50)   @map("kode_rekening")
+  kategori     VarChar(100)?
+  namaBarang   VarChar(255)  @map("nama_barang")
+
+  @@map("master_masterbarang")
+}
+
+model MasterPemegangaset {
+  id         BigInt        @id(map: "master_pemegangaset_pkey") @default(autoincrement())
+  tahun      Int
+  kondisi    VarChar(100)
+  keterangan String?
+  asetId     BigInt        @map("aset_id")
+  pegawaiId  BigInt        @map("pegawai_id")
+  aset       MasterAset    @relation(fields: [asetId], references: [id], map: "master_pemegangaset_aset_id_9bea47f5_fk_master_aset_id")
+  pegawai    MasterPegawai @relation(fields: [pegawaiId], references: [id], map: "master_pemegangaset_pegawai_id_270b5727_fk_master_pegawai_id")
+
+  @@index([asetId], map: "master_pemegangaset_aset_id_9bea47f5")
+  @@index([pegawaiId], map: "master_pemegangaset_pegawai_id_270b5727")
+  @@map("master_pemegangaset")
+}
+
+model MasterPemegangkendaraan {
+  id          BigInt          @id(map: "master_pemegangkendaraan_pkey") @default(autoincrement())
+  kondisi     VarChar(10)
+  kendaraanId BigInt          @map("kendaraan_id")
+  pegawaiId   BigInt          @map("pegawai_id")
+  keterangan  String?
+  kendaraan   MasterKendaraan @relation(fields: [kendaraanId], references: [id], map: "master_pemegangkenda_kendaraan_id_49ad76d7_fk_master_ke")
+  pegawai     MasterPegawai   @relation(fields: [pegawaiId], references: [id], map: "master_pemegangkenda_pegawai_id_e3462423_fk_master_pe")
+
+  @@index([kendaraanId], map: "master_pemegangkendaraan_kendaraan_id_49ad76d7")
+  @@index([pegawaiId], map: "master_pemegangkendaraan_pegawai_id_e3462423")
+  @@map("master_pemegangkendaraan")
+}
+
+model MasterServicebarang {
+  id                 BigInt              @id(map: "master_servicebarang_pkey") @default(autoincrement())
+  namaBarang         VarChar(200)        @map("nama_barang")
+  kodeBarang         VarChar(100)        @map("kode_barang")
+  pegawai            VarChar(200)?
+  keluhan            String
+  keterangan         String?
+  kondisiAwal        String?             @map("kondisi_awal")
+  kondisiAkhir       String?             @map("kondisi_akhir")
+  penerimaService    VarChar(200)?       @map("penerima_service")
+  penerima           VarChar(200)?
+  tanggalService     DateString          @map("tanggal_service")
+  tanggalKembali     DateString?         @map("tanggal_kembali")
+  status             VarChar(20)
+  createdAt          TimestamptzString   @map("created_at")
+  asetId             BigInt              @map("aset_id")
+  catatan            String?
+  noService          VarChar(100)?       @map("no_service")
+  file               VarChar(100)?
+  masterServicefiles MasterServicefile[]
+  aset               MasterAset          @relation(fields: [asetId], references: [id], map: "master_servicebarang_aset_id_e5a8f20a_fk_master_aset_id")
+
+  @@index([asetId], map: "master_servicebarang_aset_id_e5a8f20a")
+  @@map("master_servicebarang")
+}
+
+model MasterServicefile {
+  id        BigInt              @id(map: "master_servicefile_pkey") @default(autoincrement())
+  file      VarChar(100)
+  serviceId BigInt              @map("service_id")
+  jenis     VarChar(20)
+  service   MasterServicebarang @relation(fields: [serviceId], references: [id], map: "master_servicefile_service_id_7d027653_fk_master_se")
+
+  @@index([serviceId], map: "master_servicefile_service_id_7d027653")
+  @@map("master_servicefile")
+}
+
+model MasterTransaksi {
+  id           BigInt       @id(map: "master_transaksi_pkey") @default(autoincrement())
+  kodeRekening VarChar(50)  @map("kode_rekening")
+  namaBarang   VarChar(255) @map("nama_barang")
+  tipe         VarChar(10)
+  jumlah       Int
+  harga        Int
+  total        Int
+  tanggal      DateString
+  batchId      VarChar(50)? @map("batch_id")
+  sisa         Int
+
+  @@map("master_transaksi")
+}
