@@ -1874,7 +1874,23 @@
                 }
               }
             },
-            "relations": {},
+            "relations": {
+              "barang": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "kodeRekeningId"
+                  ]
+                },
+                "to": {
+                  "model": "MasterMasterbarang",
+                  "namespace": "public"
+                }
+              }
+            },
             "storage": {
               "fields": {
                 "createdAt": {
@@ -2228,6 +2244,20 @@
           },
           "MasterMasterbarang": {
             "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "deletedAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
               "id": {
                 "nullable": false,
                 "type": {
@@ -2235,24 +2265,11 @@
                   "kind": "scalar"
                 }
               },
-              "kategori": {
-                "nullable": true,
-                "type": {
-                  "codecId": "sql/varchar@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "length": 100
-                  }
-                }
-              },
-              "kodeRekening": {
+              "kodeRekeningId": {
                 "nullable": false,
                 "type": {
-                  "codecId": "sql/varchar@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "length": 50
-                  }
+                  "codecId": "pg/int8@1",
+                  "kind": "scalar"
                 }
               },
               "namaBarang": {
@@ -2264,22 +2281,52 @@
                     "length": 255
                   }
                 }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
               }
             },
-            "relations": {},
+            "relations": {
+              "koderekening": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "kodeRekeningId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "MasterKoderekening",
+                  "namespace": "public"
+                }
+              }
+            },
             "storage": {
               "fields": {
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "deletedAt": {
+                  "column": "deleted_at"
+                },
                 "id": {
                   "column": "id"
                 },
-                "kategori": {
-                  "column": "kategori"
-                },
-                "kodeRekening": {
-                  "column": "kode_rekening"
+                "kodeRekeningId": {
+                  "column": "kode_rekening_id"
                 },
                 "namaBarang": {
                   "column": "nama_barang"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
                 }
               },
               "namespaceId": "public",
@@ -3231,6 +3278,9 @@
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "auth_group_permissions_permission_id_84c5c92e"
+                  },
                   "name": "auth_group_permissio_permission_id_84c5c92e_fk_auth_perm",
                   "source": {
                     "columns": [
@@ -3248,6 +3298,9 @@
                   }
                 },
                 {
+                  "index": {
+                    "name": "auth_group_permissions_group_id_b120cbf9"
+                  },
                   "name": "auth_group_permissions_group_id_b120cbf9_fk_auth_group_id",
                   "source": {
                     "columns": [
@@ -3332,6 +3385,9 @@
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "auth_permission_content_type_id_2f476e4b"
+                  },
                   "name": "auth_permission_content_type_id_2f476e4b_fk_django_co",
                   "source": {
                     "columns": [
@@ -3500,6 +3556,9 @@
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "auth_user_groups_group_id_97559544"
+                  },
                   "name": "auth_user_groups_group_id_97559544_fk_auth_group_id",
                   "source": {
                     "columns": [
@@ -3517,6 +3576,9 @@
                   }
                 },
                 {
+                  "index": {
+                    "name": "auth_user_groups_user_id_6a12ed8b"
+                  },
                   "name": "auth_user_groups_user_id_6a12ed8b_fk_auth_user_id",
                   "source": {
                     "columns": [
@@ -3590,6 +3652,9 @@
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "auth_user_user_permissions_permission_id_1fbb5f2c"
+                  },
                   "name": "auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm",
                   "source": {
                     "columns": [
@@ -3607,6 +3672,9 @@
                   }
                 },
                 {
+                  "index": {
+                    "name": "auth_user_user_permissions_user_id_a95ead1b"
+                  },
                   "name": "auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id",
                   "source": {
                     "columns": [
@@ -3714,6 +3782,9 @@
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "django_admin_log_content_type_id_c4bce8eb"
+                  },
                   "name": "django_admin_log_content_type_id_c4bce8eb_fk_django_co",
                   "source": {
                     "columns": [
@@ -3731,6 +3802,9 @@
                   }
                 },
                 {
+                  "index": {
+                    "name": "django_admin_log_user_id_c564eba6"
+                  },
                   "name": "django_admin_log_user_id_c564eba6_fk_auth_user_id",
                   "source": {
                     "columns": [
@@ -3978,6 +4052,9 @@
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "master_aset_kode_bmd_id_d5af848d"
+                  },
                   "name": "master_aset_kode_bmd_id_d5af848d_fk_master_kodebmd_id",
                   "source": {
                     "columns": [
@@ -4079,6 +4156,9 @@
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "master_cuti_pegawai_id_cc0111cf"
+                  },
                   "name": "master_cuti_pegawai_id_cc0111cf_fk_master_pegawai_id",
                   "source": {
                     "columns": [
@@ -4152,6 +4232,11 @@
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "unique": [
+                      "pegawai_id"
+                    ]
+                  },
                   "name": "master_cutisaldo_pegawai_id_34046fd1_fk_master_pegawai_id",
                   "source": {
                     "columns": [
@@ -4364,6 +4449,9 @@
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "master_kgb_pegawai_id_10aa3f26"
+                  },
                   "name": "master_kgb_pegawai_id_10aa3f26_fk_master_pegawai_id",
                   "source": {
                     "columns": [
@@ -4433,6 +4521,9 @@
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "master_kodebmd_parent_id_5626ee89"
+                  },
                   "name": "master_kodebmd_parent_id_5626ee89_fk_master_kodebmd_id",
                   "source": {
                     "columns": [
@@ -4645,6 +4736,9 @@
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "master_kp_pegawai_id_79f16391"
+                  },
                   "name": "master_kp_pegawai_id_79f16391_fk_master_pegawai_id",
                   "source": {
                     "columns": [
@@ -4745,6 +4839,9 @@
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "master_logwa_pegawai_id_a0e95877"
+                  },
                   "name": "master_logwa_pegawai_id_a0e95877_fk_master_pegawai_id",
                   "source": {
                     "columns": [
@@ -4781,6 +4878,20 @@
             },
             "master_masterbarang": {
               "columns": {
+                "created_at": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "deleted_at": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
+                  "nullable": true
+                },
                 "id": {
                   "codecId": "pg/int8@1",
                   "dataType": "pg/int8",
@@ -4790,21 +4901,10 @@
                   },
                   "nullable": false
                 },
-                "kategori": {
-                  "codecId": "sql/varchar@1",
-                  "dataType": "pg/varchar",
-                  "nullable": true,
-                  "typeParams": {
-                    "length": 100
-                  }
-                },
-                "kode_rekening": {
-                  "codecId": "sql/varchar@1",
-                  "dataType": "pg/varchar",
-                  "nullable": false,
-                  "typeParams": {
-                    "length": 50
-                  }
+                "kode_rekening_id": {
+                  "codecId": "pg/int8@1",
+                  "dataType": "pg/int8",
+                  "nullable": false
                 },
                 "nama_barang": {
                   "codecId": "sql/varchar@1",
@@ -4813,10 +4913,48 @@
                   "typeParams": {
                     "length": 255
                   }
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nullable": false
                 }
               },
-              "foreignKeys": [],
-              "indexes": [],
+              "foreignKeys": [
+                {
+                  "index": {
+                    "name": "master_masterbarang_kode_rekening_id_idx_a47ac379"
+                  },
+                  "source": {
+                    "columns": [
+                      "kode_rekening_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "master_masterbarang"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "master_koderekening"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "kode_rekening_id"
+                  ],
+                  "name": "master_masterbarang_kode_rekening_id_idx_a47ac379",
+                  "prefix": "master_masterbarang_kode_rekening_id_idx",
+                  "unique": false
+                }
+              ],
               "primaryKey": {
                 "columns": [
                   "id"
@@ -4960,6 +5098,9 @@
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "master_pemegangaset_aset_id_9bea47f5"
+                  },
                   "name": "master_pemegangaset_aset_id_9bea47f5_fk_master_aset_id",
                   "source": {
                     "columns": [
@@ -4977,6 +5118,9 @@
                   }
                 },
                 {
+                  "index": {
+                    "name": "master_pemegangaset_pegawai_id_270b5727"
+                  },
                   "name": "master_pemegangaset_pegawai_id_270b5727_fk_master_pegawai_id",
                   "source": {
                     "columns": [
@@ -5055,6 +5199,9 @@
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "master_pemegangkendaraan_kendaraan_id_49ad76d7"
+                  },
                   "name": "master_pemegangkenda_kendaraan_id_49ad76d7_fk_master_ke",
                   "source": {
                     "columns": [
@@ -5072,6 +5219,9 @@
                   }
                 },
                 {
+                  "index": {
+                    "name": "master_pemegangkendaraan_pegawai_id_e3462423"
+                  },
                   "name": "master_pemegangkenda_pegawai_id_e3462423_fk_master_pe",
                   "source": {
                     "columns": [
@@ -5236,6 +5386,9 @@
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "master_servicebarang_aset_id_e5a8f20a"
+                  },
                   "name": "master_servicebarang_aset_id_e5a8f20a_fk_master_aset_id",
                   "source": {
                     "columns": [
@@ -5305,6 +5458,9 @@
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "master_servicefile_service_id_7d027653"
+                  },
                   "name": "master_servicefile_service_id_7d027653_fk_master_se",
                   "source": {
                     "columns": [
@@ -5424,7 +5580,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "8486497db59263c716c2fa12b44f2b6cfb072a500c70466fd756fe0a5ff5e2d0"
+    "storageHash": "9c10bd148e70f55d46f14b2b19a1619c31feb1420031e2318fbca4619789d70c"
   },
   "capabilities": {
     "postgres": {

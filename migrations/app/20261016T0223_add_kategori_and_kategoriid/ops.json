@@ -1,0 +1,190 @@
+[
+  {
+    "id": "column.public.master_masterbarang.kategori",
+    "label": "Add column \"kategori\" to \"master_masterbarang\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "kategori",
+        "table": "master_masterbarang"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"kategori\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "master_masterbarang",
+          "kategori"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"kategori\"",
+        "sql": "ALTER TABLE \"public\".\"master_masterbarang\" ADD COLUMN \"kategori\" character varying(100)"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"kategori\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "master_masterbarang",
+          "kategori"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.master_masterbarang.kode_rekening_id",
+    "label": "Add column kode_rekening_id to master_masterbarang",
+    "summary": "Adds column kode_rekening_id to table master_masterbarang",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "kode_rekening_id",
+        "table": "master_masterbarang"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"kode_rekening_id\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "master_masterbarang",
+          "kode_rekening_id"
+        ]
+      },
+      {
+        "description": "ensure table \"master_masterbarang\" is empty before adding NOT NULL column without default",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"public\".\"master_masterbarang\" LIMIT 1) AS \"result\"",
+        "params": [],
+        "meta": {
+          "requiredColumn": {
+            "table": "master_masterbarang",
+            "column": "kode_rekening_id",
+            "reason": "newField"
+          }
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"kode_rekening_id\"",
+        "sql": "ALTER TABLE \"public\".\"master_masterbarang\" ADD COLUMN \"kode_rekening_id\" int8 NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"kode_rekening_id\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "master_masterbarang",
+          "kode_rekening_id"
+        ]
+      },
+      {
+        "description": "verify column \"kode_rekening_id\" is NOT NULL",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+        "params": [
+          "public",
+          "master_masterbarang",
+          "kode_rekening_id",
+          "NO"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.master_masterbarang.master_masterbarang_kode_rekening_id_idx_a47ac379",
+    "label": "Create index \"master_masterbarang_kode_rekening_id_idx_a47ac379\" on \"master_masterbarang\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "master_masterbarang_kode_rekening_id_idx_a47ac379",
+        "table": "master_masterbarang"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"master_masterbarang_kode_rekening_id_idx_a47ac379\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_masterbarang_kode_rekening_id_idx_a47ac379\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"master_masterbarang_kode_rekening_id_idx_a47ac379\"",
+        "sql": "CREATE INDEX \"master_masterbarang_kode_rekening_id_idx_a47ac379\" ON \"public\".\"master_masterbarang\" (\"kode_rekening_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"master_masterbarang_kode_rekening_id_idx_a47ac379\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_masterbarang_kode_rekening_id_idx_a47ac379\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.master_masterbarang.master_masterbarang_kode_rekening_id_fkey",
+    "label": "Add foreign key \"master_masterbarang_kode_rekening_id_fkey\" on \"master_masterbarang\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "master_masterbarang_kode_rekening_id_fkey",
+        "table": "master_masterbarang"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"master_masterbarang_kode_rekening_id_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_masterbarang_kode_rekening_id_fkey",
+          "public",
+          "\"public\".\"master_masterbarang\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"master_masterbarang_kode_rekening_id_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"master_masterbarang\"\nADD CONSTRAINT \"master_masterbarang_kode_rekening_id_fkey\"\nFOREIGN KEY (\"kode_rekening_id\")\nREFERENCES \"public\".\"master_koderekening\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"master_masterbarang_kode_rekening_id_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_masterbarang_kode_rekening_id_fkey",
+          "public",
+          "\"public\".\"master_masterbarang\""
+        ]
+      }
+    ]
+  }
+]

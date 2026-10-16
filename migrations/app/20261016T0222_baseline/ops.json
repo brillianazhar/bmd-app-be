@@ -1,0 +1,3430 @@
+[
+  {
+    "id": "schema.public",
+    "label": "Create schema \"public\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "Create schema \"public\"",
+        "sql": "CREATE SCHEMA IF NOT EXISTS \"public\"",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "table.auth_group",
+    "label": "Create table \"auth_group\"",
+    "summary": "Creates table \"auth_group\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "auth_group"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"auth_group\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_group\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"auth_group\"",
+        "sql": "CREATE TABLE \"public\".\"auth_group\" (\n  \"id\" SERIAL NOT NULL,\n  \"name\" character varying(150) NOT NULL,\n  CONSTRAINT \"auth_group_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"auth_group\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_group\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.auth_group_permissions",
+    "label": "Create table \"auth_group_permissions\"",
+    "summary": "Creates table \"auth_group_permissions\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "auth_group_permissions"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"auth_group_permissions\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_group_permissions\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"auth_group_permissions\"",
+        "sql": "CREATE TABLE \"public\".\"auth_group_permissions\" (\n  \"group_id\" int4 NOT NULL,\n  \"id\" BIGSERIAL NOT NULL,\n  \"permission_id\" int4 NOT NULL,\n  CONSTRAINT \"auth_group_permissions_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"auth_group_permissions\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_group_permissions\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.auth_permission",
+    "label": "Create table \"auth_permission\"",
+    "summary": "Creates table \"auth_permission\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "auth_permission"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"auth_permission\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_permission\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"auth_permission\"",
+        "sql": "CREATE TABLE \"public\".\"auth_permission\" (\n  \"codename\" character varying(100) NOT NULL,\n  \"content_type_id\" int4 NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"name\" character varying(255) NOT NULL,\n  CONSTRAINT \"auth_permission_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"auth_permission\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_permission\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.auth_user",
+    "label": "Create table \"auth_user\"",
+    "summary": "Creates table \"auth_user\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "auth_user"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"auth_user\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_user\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"auth_user\"",
+        "sql": "CREATE TABLE \"public\".\"auth_user\" (\n  \"date_joined\" timestamptz NOT NULL,\n  \"email\" character varying(254) NOT NULL,\n  \"first_name\" character varying(150) NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"is_active\" bool NOT NULL,\n  \"is_staff\" bool NOT NULL,\n  \"is_superuser\" bool NOT NULL,\n  \"last_login\" timestamptz,\n  \"last_name\" character varying(150) NOT NULL,\n  \"password\" character varying(128) NOT NULL,\n  \"username\" character varying(150) NOT NULL,\n  CONSTRAINT \"auth_user_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"auth_user\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_user\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.auth_user_groups",
+    "label": "Create table \"auth_user_groups\"",
+    "summary": "Creates table \"auth_user_groups\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "auth_user_groups"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"auth_user_groups\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_user_groups\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"auth_user_groups\"",
+        "sql": "CREATE TABLE \"public\".\"auth_user_groups\" (\n  \"group_id\" int4 NOT NULL,\n  \"id\" BIGSERIAL NOT NULL,\n  \"user_id\" int4 NOT NULL,\n  CONSTRAINT \"auth_user_groups_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"auth_user_groups\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_user_groups\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.auth_user_user_permissions",
+    "label": "Create table \"auth_user_user_permissions\"",
+    "summary": "Creates table \"auth_user_user_permissions\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "auth_user_user_permissions"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"auth_user_user_permissions\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_user_user_permissions\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"auth_user_user_permissions\"",
+        "sql": "CREATE TABLE \"public\".\"auth_user_user_permissions\" (\n  \"id\" BIGSERIAL NOT NULL,\n  \"permission_id\" int4 NOT NULL,\n  \"user_id\" int4 NOT NULL,\n  CONSTRAINT \"auth_user_user_permissions_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"auth_user_user_permissions\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_user_user_permissions\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.django_admin_log",
+    "label": "Create table \"django_admin_log\"",
+    "summary": "Creates table \"django_admin_log\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "django_admin_log"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"django_admin_log\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"django_admin_log\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"django_admin_log\"",
+        "sql": "CREATE TABLE \"public\".\"django_admin_log\" (\n  \"action_flag\" int2 NOT NULL,\n  \"action_time\" timestamptz NOT NULL,\n  \"change_message\" text NOT NULL,\n  \"content_type_id\" int4,\n  \"id\" SERIAL NOT NULL,\n  \"object_id\" text,\n  \"object_repr\" character varying(200) NOT NULL,\n  \"user_id\" int4 NOT NULL,\n  CONSTRAINT \"django_admin_log_pkey\" PRIMARY KEY (\"id\"),\n  CONSTRAINT \"django_admin_log_action_flag_check\" CHECK ((action_flag >= 0))\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"django_admin_log\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"django_admin_log\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.django_content_type",
+    "label": "Create table \"django_content_type\"",
+    "summary": "Creates table \"django_content_type\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "django_content_type"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"django_content_type\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"django_content_type\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"django_content_type\"",
+        "sql": "CREATE TABLE \"public\".\"django_content_type\" (\n  \"app_label\" character varying(100) NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"model\" character varying(100) NOT NULL,\n  CONSTRAINT \"django_content_type_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"django_content_type\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"django_content_type\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.django_migrations",
+    "label": "Create table \"django_migrations\"",
+    "summary": "Creates table \"django_migrations\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "django_migrations"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"django_migrations\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"django_migrations\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"django_migrations\"",
+        "sql": "CREATE TABLE \"public\".\"django_migrations\" (\n  \"app\" character varying(255) NOT NULL,\n  \"applied\" timestamptz NOT NULL,\n  \"id\" BIGSERIAL NOT NULL,\n  \"name\" character varying(255) NOT NULL,\n  CONSTRAINT \"django_migrations_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"django_migrations\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"django_migrations\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.django_session",
+    "label": "Create table \"django_session\"",
+    "summary": "Creates table \"django_session\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "django_session"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"django_session\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"django_session\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"django_session\"",
+        "sql": "CREATE TABLE \"public\".\"django_session\" (\n  \"expire_date\" timestamptz NOT NULL,\n  \"session_data\" text NOT NULL,\n  \"session_key\" character varying(40) NOT NULL,\n  CONSTRAINT \"django_session_pkey\" PRIMARY KEY (\"session_key\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"django_session\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"django_session\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.master_aset",
+    "label": "Create table \"master_aset\"",
+    "summary": "Creates table \"master_aset\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "master_aset"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"master_aset\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_aset\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"master_aset\"",
+        "sql": "CREATE TABLE \"public\".\"master_aset\" (\n  \"harga\" int8 NOT NULL,\n  \"id\" BIGSERIAL NOT NULL,\n  \"keterangan\" text,\n  \"kode_bmd_id\" int8 NOT NULL,\n  \"kode_lengkap\" character varying(100),\n  \"kondisi\" character varying(50) NOT NULL,\n  \"merk\" character varying(255),\n  \"nama_barang\" character varying(255) NOT NULL,\n  \"nomor_register\" int4 NOT NULL,\n  \"tahun\" int4 NOT NULL,\n  CONSTRAINT \"master_aset_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"master_aset\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_aset\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.master_cuti",
+    "label": "Create table \"master_cuti\"",
+    "summary": "Creates table \"master_cuti\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "master_cuti"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"master_cuti\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_cuti\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"master_cuti\"",
+        "sql": "CREATE TABLE \"public\".\"master_cuti\" (\n  \"created_at\" timestamptz NOT NULL,\n  \"dari_current\" int4 NOT NULL,\n  \"dari_n\" int4 NOT NULL,\n  \"dari_n1\" int4 NOT NULL,\n  \"id\" BIGSERIAL NOT NULL,\n  \"jenis\" character varying(20) NOT NULL,\n  \"jumlah_hari\" int4 NOT NULL,\n  \"keterangan\" text,\n  \"pegawai_id\" int8 NOT NULL,\n  \"tanggal_mulai\" date NOT NULL,\n  \"tanggal_selesai\" date NOT NULL,\n  CONSTRAINT \"master_cuti_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"master_cuti\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_cuti\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.master_cutisaldo",
+    "label": "Create table \"master_cutisaldo\"",
+    "summary": "Creates table \"master_cutisaldo\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "master_cutisaldo"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"master_cutisaldo\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_cutisaldo\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"master_cutisaldo\"",
+        "sql": "CREATE TABLE \"public\".\"master_cutisaldo\" (\n  \"current\" int4 NOT NULL,\n  \"id\" BIGSERIAL NOT NULL,\n  \"n\" int4 NOT NULL,\n  \"n1\" int4 NOT NULL,\n  \"pegawai_id\" int8 NOT NULL,\n  \"tahun\" int4 NOT NULL,\n  CONSTRAINT \"master_cutisaldo_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"master_cutisaldo\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_cutisaldo\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.master_kendaraan",
+    "label": "Create table \"master_kendaraan\"",
+    "summary": "Creates table \"master_kendaraan\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "master_kendaraan"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"master_kendaraan\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_kendaraan\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"master_kendaraan\"",
+        "sql": "CREATE TABLE \"public\".\"master_kendaraan\" (\n  \"foto\" character varying(100),\n  \"id\" BIGSERIAL NOT NULL,\n  \"jenis\" character varying(10) NOT NULL,\n  \"masa_pajak\" date NOT NULL,\n  \"merk\" character varying(100) NOT NULL,\n  \"no_mesin\" character varying(100) NOT NULL,\n  \"no_rangka\" character varying(100) NOT NULL,\n  \"plat_nomor\" character varying(20) NOT NULL,\n  \"status_bayar\" bool NOT NULL,\n  \"stnk\" character varying(100),\n  \"tahun\" int4 NOT NULL,\n  CONSTRAINT \"master_kendaraan_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"master_kendaraan\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_kendaraan\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.master_kgb",
+    "label": "Create table \"master_kgb\"",
+    "summary": "Creates table \"master_kgb\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "master_kgb"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"master_kgb\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_kgb\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"master_kgb\"",
+        "sql": "CREATE TABLE \"public\".\"master_kgb\" (\n  \"file_sk\" character varying(100),\n  \"gaji_baru\" int4 NOT NULL,\n  \"gaji_lama\" int4 NOT NULL,\n  \"golongan\" character varying(100) NOT NULL,\n  \"id\" BIGSERIAL NOT NULL,\n  \"kgb_berikutnya\" date,\n  \"masa_bulan\" int4 NOT NULL,\n  \"masa_tahun\" int4 NOT NULL,\n  \"no_sk\" character varying(100) NOT NULL,\n  \"pangkat\" character varying(100),\n  \"pegawai_id\" int8 NOT NULL,\n  \"tanggal_sk\" date NOT NULL,\n  \"tmt_kgb\" date NOT NULL,\n  CONSTRAINT \"master_kgb_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"master_kgb\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_kgb\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.master_kodebmd",
+    "label": "Create table \"master_kodebmd\"",
+    "summary": "Creates table \"master_kodebmd\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "master_kodebmd"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"master_kodebmd\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_kodebmd\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"master_kodebmd\"",
+        "sql": "CREATE TABLE \"public\".\"master_kodebmd\" (\n  \"id\" BIGSERIAL NOT NULL,\n  \"kode\" character varying(50) NOT NULL,\n  \"nama\" character varying(255) NOT NULL,\n  \"parent_id\" int8,\n  CONSTRAINT \"master_kodebmd_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"master_kodebmd\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_kodebmd\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.master_koderekening",
+    "label": "Create table \"master_koderekening\"",
+    "summary": "Creates table \"master_koderekening\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "master_koderekening"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"master_koderekening\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_koderekening\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"master_koderekening\"",
+        "sql": "CREATE TABLE \"public\".\"master_koderekening\" (\n  \"created_at\" timestamptz DEFAULT (now()) NOT NULL,\n  \"deleted_at\" timestamptz,\n  \"id\" BIGSERIAL NOT NULL,\n  \"kategori\" character varying(100) NOT NULL,\n  \"kode\" character varying(50) NOT NULL,\n  \"updated_at\" timestamptz DEFAULT (now()) NOT NULL,\n  CONSTRAINT \"master_koderekening_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"master_koderekening\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_koderekening\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.master_kp",
+    "label": "Create table \"master_kp\"",
+    "summary": "Creates table \"master_kp\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "master_kp"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"master_kp\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_kp\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"master_kp\"",
+        "sql": "CREATE TABLE \"public\".\"master_kp\" (\n  \"file_sk\" character varying(100),\n  \"gaji\" int4 NOT NULL,\n  \"golongan\" character varying(10) NOT NULL,\n  \"id\" BIGSERIAL NOT NULL,\n  \"jenis_kp\" character varying(200) NOT NULL,\n  \"kp_berikutnya\" date,\n  \"masa_bulan\" int4 NOT NULL,\n  \"masa_tahun\" int4 NOT NULL,\n  \"no_bkn\" character varying(100),\n  \"no_sk\" character varying(100) NOT NULL,\n  \"pangkat\" character varying(100) NOT NULL,\n  \"pegawai_id\" int8 NOT NULL,\n  \"tanggal_bkn\" date,\n  \"tanggal_sk\" date NOT NULL,\n  \"tmt_kp\" date NOT NULL,\n  CONSTRAINT \"master_kp_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"master_kp\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_kp\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.master_logwa",
+    "label": "Create table \"master_logwa\"",
+    "summary": "Creates table \"master_logwa\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "master_logwa"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"master_logwa\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_logwa\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"master_logwa\"",
+        "sql": "CREATE TABLE \"public\".\"master_logwa\" (\n  \"created_at\" timestamptz NOT NULL,\n  \"id\" BIGSERIAL NOT NULL,\n  \"jenis\" character varying(10) NOT NULL,\n  \"nomor\" character varying(20) NOT NULL,\n  \"pegawai_id\" int8 NOT NULL,\n  \"response\" text,\n  \"status\" character varying(10) NOT NULL,\n  \"tanggal_event\" date NOT NULL,\n  \"tipe\" character varying(10) NOT NULL,\n  CONSTRAINT \"master_logwa_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"master_logwa\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_logwa\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.master_masterbarang",
+    "label": "Create table \"master_masterbarang\"",
+    "summary": "Creates table \"master_masterbarang\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "master_masterbarang"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"master_masterbarang\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_masterbarang\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"master_masterbarang\"",
+        "sql": "CREATE TABLE \"public\".\"master_masterbarang\" (\n  \"created_at\" timestamptz DEFAULT (now()) NOT NULL,\n  \"deleted_at\" timestamptz,\n  \"id\" BIGSERIAL NOT NULL,\n  \"nama_barang\" character varying(255) NOT NULL,\n  \"updated_at\" timestamptz DEFAULT (now()) NOT NULL,\n  CONSTRAINT \"master_masterbarang_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"master_masterbarang\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_masterbarang\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.master_pegawai",
+    "label": "Create table \"master_pegawai\"",
+    "summary": "Creates table \"master_pegawai\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "master_pegawai"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"master_pegawai\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_pegawai\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"master_pegawai\"",
+        "sql": "CREATE TABLE \"public\".\"master_pegawai\" (\n  \"foto\" character varying(100),\n  \"golongan\" character varying(20),\n  \"id\" BIGSERIAL NOT NULL,\n  \"jabatan\" character varying(100) NOT NULL,\n  \"nama\" character varying(255) NOT NULL,\n  \"nip\" character varying(18) NOT NULL,\n  \"no_hp\" character varying(15) NOT NULL,\n  \"pangkat\" character varying(100),\n  CONSTRAINT \"master_pegawai_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"master_pegawai\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_pegawai\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.master_pemegangaset",
+    "label": "Create table \"master_pemegangaset\"",
+    "summary": "Creates table \"master_pemegangaset\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "master_pemegangaset"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"master_pemegangaset\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_pemegangaset\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"master_pemegangaset\"",
+        "sql": "CREATE TABLE \"public\".\"master_pemegangaset\" (\n  \"aset_id\" int8 NOT NULL,\n  \"id\" BIGSERIAL NOT NULL,\n  \"keterangan\" text,\n  \"kondisi\" character varying(100) NOT NULL,\n  \"pegawai_id\" int8 NOT NULL,\n  \"tahun\" int4 NOT NULL,\n  CONSTRAINT \"master_pemegangaset_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"master_pemegangaset\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_pemegangaset\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.master_pemegangkendaraan",
+    "label": "Create table \"master_pemegangkendaraan\"",
+    "summary": "Creates table \"master_pemegangkendaraan\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "master_pemegangkendaraan"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"master_pemegangkendaraan\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_pemegangkendaraan\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"master_pemegangkendaraan\"",
+        "sql": "CREATE TABLE \"public\".\"master_pemegangkendaraan\" (\n  \"id\" BIGSERIAL NOT NULL,\n  \"kendaraan_id\" int8 NOT NULL,\n  \"keterangan\" text,\n  \"kondisi\" character varying(10) NOT NULL,\n  \"pegawai_id\" int8 NOT NULL,\n  CONSTRAINT \"master_pemegangkendaraan_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"master_pemegangkendaraan\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_pemegangkendaraan\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.master_servicebarang",
+    "label": "Create table \"master_servicebarang\"",
+    "summary": "Creates table \"master_servicebarang\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "master_servicebarang"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"master_servicebarang\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_servicebarang\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"master_servicebarang\"",
+        "sql": "CREATE TABLE \"public\".\"master_servicebarang\" (\n  \"aset_id\" int8 NOT NULL,\n  \"catatan\" text,\n  \"created_at\" timestamptz NOT NULL,\n  \"file\" character varying(100),\n  \"id\" BIGSERIAL NOT NULL,\n  \"keluhan\" text NOT NULL,\n  \"keterangan\" text,\n  \"kode_barang\" character varying(100) NOT NULL,\n  \"kondisi_akhir\" text,\n  \"kondisi_awal\" text,\n  \"nama_barang\" character varying(200) NOT NULL,\n  \"no_service\" character varying(100),\n  \"pegawai\" character varying(200),\n  \"penerima\" character varying(200),\n  \"penerima_service\" character varying(200),\n  \"status\" character varying(20) NOT NULL,\n  \"tanggal_kembali\" date,\n  \"tanggal_service\" date NOT NULL,\n  CONSTRAINT \"master_servicebarang_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"master_servicebarang\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_servicebarang\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.master_servicefile",
+    "label": "Create table \"master_servicefile\"",
+    "summary": "Creates table \"master_servicefile\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "master_servicefile"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"master_servicefile\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_servicefile\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"master_servicefile\"",
+        "sql": "CREATE TABLE \"public\".\"master_servicefile\" (\n  \"file\" character varying(100) NOT NULL,\n  \"id\" BIGSERIAL NOT NULL,\n  \"jenis\" character varying(20) NOT NULL,\n  \"service_id\" int8 NOT NULL,\n  CONSTRAINT \"master_servicefile_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"master_servicefile\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_servicefile\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.master_transaksi",
+    "label": "Create table \"master_transaksi\"",
+    "summary": "Creates table \"master_transaksi\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "master_transaksi"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"master_transaksi\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_transaksi\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"master_transaksi\"",
+        "sql": "CREATE TABLE \"public\".\"master_transaksi\" (\n  \"batch_id\" character varying(50),\n  \"harga\" int4 NOT NULL,\n  \"id\" BIGSERIAL NOT NULL,\n  \"jumlah\" int4 NOT NULL,\n  \"kode_rekening\" character varying(50) NOT NULL,\n  \"nama_barang\" character varying(255) NOT NULL,\n  \"sisa\" int4 NOT NULL,\n  \"tanggal\" date NOT NULL,\n  \"tipe\" character varying(10) NOT NULL,\n  \"total\" int4 NOT NULL,\n  CONSTRAINT \"master_transaksi_pkey\" PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"master_transaksi\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_transaksi\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.auth_group.auth_group_name_key",
+    "label": "Add unique constraint on \"auth_group\" (name)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "auth_group_name_key",
+        "table": "auth_group"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"auth_group_name_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_group_name_key",
+          "public",
+          "\"public\".\"auth_group\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"auth_group_name_key\"",
+        "sql": "ALTER TABLE \"public\".\"auth_group\" ADD CONSTRAINT \"auth_group_name_key\" UNIQUE (\"name\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"auth_group_name_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_group_name_key",
+          "public",
+          "\"public\".\"auth_group\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.auth_group_permissions.auth_group_permissions_group_id_permission_id_0cd325b0_uniq",
+    "label": "Add unique constraint on \"auth_group_permissions\" (group_id, permission_id)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "auth_group_permissions_group_id_permission_id_0cd325b0_uniq",
+        "table": "auth_group_permissions"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"auth_group_permissions_group_id_permission_id_0cd325b0_uniq\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_group_permissions_group_id_permission_id_0cd325b0_uniq",
+          "public",
+          "\"public\".\"auth_group_permissions\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"auth_group_permissions_group_id_permission_id_0cd325b0_uniq\"",
+        "sql": "ALTER TABLE \"public\".\"auth_group_permissions\" ADD CONSTRAINT \"auth_group_permissions_group_id_permission_id_0cd325b0_uniq\" UNIQUE (\"group_id\", \"permission_id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"auth_group_permissions_group_id_permission_id_0cd325b0_uniq\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_group_permissions_group_id_permission_id_0cd325b0_uniq",
+          "public",
+          "\"public\".\"auth_group_permissions\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.auth_permission.auth_permission_content_type_id_codename_01ab375a_uniq",
+    "label": "Add unique constraint on \"auth_permission\" (content_type_id, codename)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "auth_permission_content_type_id_codename_01ab375a_uniq",
+        "table": "auth_permission"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"auth_permission_content_type_id_codename_01ab375a_uniq\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_permission_content_type_id_codename_01ab375a_uniq",
+          "public",
+          "\"public\".\"auth_permission\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"auth_permission_content_type_id_codename_01ab375a_uniq\"",
+        "sql": "ALTER TABLE \"public\".\"auth_permission\" ADD CONSTRAINT \"auth_permission_content_type_id_codename_01ab375a_uniq\" UNIQUE (\"content_type_id\", \"codename\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"auth_permission_content_type_id_codename_01ab375a_uniq\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_permission_content_type_id_codename_01ab375a_uniq",
+          "public",
+          "\"public\".\"auth_permission\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.auth_user.auth_user_username_key",
+    "label": "Add unique constraint on \"auth_user\" (username)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "auth_user_username_key",
+        "table": "auth_user"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"auth_user_username_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_user_username_key",
+          "public",
+          "\"public\".\"auth_user\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"auth_user_username_key\"",
+        "sql": "ALTER TABLE \"public\".\"auth_user\" ADD CONSTRAINT \"auth_user_username_key\" UNIQUE (\"username\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"auth_user_username_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_user_username_key",
+          "public",
+          "\"public\".\"auth_user\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.auth_user_groups.auth_user_groups_user_id_group_id_94350c0c_uniq",
+    "label": "Add unique constraint on \"auth_user_groups\" (user_id, group_id)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "auth_user_groups_user_id_group_id_94350c0c_uniq",
+        "table": "auth_user_groups"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"auth_user_groups_user_id_group_id_94350c0c_uniq\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_user_groups_user_id_group_id_94350c0c_uniq",
+          "public",
+          "\"public\".\"auth_user_groups\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"auth_user_groups_user_id_group_id_94350c0c_uniq\"",
+        "sql": "ALTER TABLE \"public\".\"auth_user_groups\" ADD CONSTRAINT \"auth_user_groups_user_id_group_id_94350c0c_uniq\" UNIQUE (\"user_id\", \"group_id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"auth_user_groups_user_id_group_id_94350c0c_uniq\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_user_groups_user_id_group_id_94350c0c_uniq",
+          "public",
+          "\"public\".\"auth_user_groups\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.auth_user_user_permissions.auth_user_user_permissions_user_id_permission_id_14a6b632_uniq",
+    "label": "Add unique constraint on \"auth_user_user_permissions\" (user_id, permission_id)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "auth_user_user_permissions_user_id_permission_id_14a6b632_uniq",
+        "table": "auth_user_user_permissions"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"auth_user_user_permissions_user_id_permission_id_14a6b632_uniq\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_user_user_permissions_user_id_permission_id_14a6b632_uniq",
+          "public",
+          "\"public\".\"auth_user_user_permissions\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"auth_user_user_permissions_user_id_permission_id_14a6b632_uniq\"",
+        "sql": "ALTER TABLE \"public\".\"auth_user_user_permissions\" ADD CONSTRAINT \"auth_user_user_permissions_user_id_permission_id_14a6b632_uniq\" UNIQUE (\"user_id\", \"permission_id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"auth_user_user_permissions_user_id_permission_id_14a6b632_uniq\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_user_user_permissions_user_id_permission_id_14a6b632_uniq",
+          "public",
+          "\"public\".\"auth_user_user_permissions\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.django_content_type.django_content_type_app_label_model_76bd3d3b_uniq",
+    "label": "Add unique constraint on \"django_content_type\" (app_label, model)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "django_content_type_app_label_model_76bd3d3b_uniq",
+        "table": "django_content_type"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"django_content_type_app_label_model_76bd3d3b_uniq\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "django_content_type_app_label_model_76bd3d3b_uniq",
+          "public",
+          "\"public\".\"django_content_type\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"django_content_type_app_label_model_76bd3d3b_uniq\"",
+        "sql": "ALTER TABLE \"public\".\"django_content_type\" ADD CONSTRAINT \"django_content_type_app_label_model_76bd3d3b_uniq\" UNIQUE (\"app_label\", \"model\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"django_content_type_app_label_model_76bd3d3b_uniq\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "django_content_type_app_label_model_76bd3d3b_uniq",
+          "public",
+          "\"public\".\"django_content_type\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.master_cutisaldo.master_cutisaldo_pegawai_id_key",
+    "label": "Add unique constraint on \"master_cutisaldo\" (pegawai_id)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "master_cutisaldo_pegawai_id_key",
+        "table": "master_cutisaldo"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"master_cutisaldo_pegawai_id_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_cutisaldo_pegawai_id_key",
+          "public",
+          "\"public\".\"master_cutisaldo\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"master_cutisaldo_pegawai_id_key\"",
+        "sql": "ALTER TABLE \"public\".\"master_cutisaldo\" ADD CONSTRAINT \"master_cutisaldo_pegawai_id_key\" UNIQUE (\"pegawai_id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"master_cutisaldo_pegawai_id_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_cutisaldo_pegawai_id_key",
+          "public",
+          "\"public\".\"master_cutisaldo\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.master_koderekening.master_koderekening_kode_key",
+    "label": "Add unique constraint on \"master_koderekening\" (kode)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "master_koderekening_kode_key",
+        "table": "master_koderekening"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"master_koderekening_kode_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_koderekening_kode_key",
+          "public",
+          "\"public\".\"master_koderekening\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"master_koderekening_kode_key\"",
+        "sql": "ALTER TABLE \"public\".\"master_koderekening\" ADD CONSTRAINT \"master_koderekening_kode_key\" UNIQUE (\"kode\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"master_koderekening_kode_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_koderekening_kode_key",
+          "public",
+          "\"public\".\"master_koderekening\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.master_pegawai.master_pegawai_nip_key",
+    "label": "Add unique constraint on \"master_pegawai\" (nip)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "master_pegawai_nip_key",
+        "table": "master_pegawai"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"master_pegawai_nip_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_pegawai_nip_key",
+          "public",
+          "\"public\".\"master_pegawai\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"master_pegawai_nip_key\"",
+        "sql": "ALTER TABLE \"public\".\"master_pegawai\" ADD CONSTRAINT \"master_pegawai_nip_key\" UNIQUE (\"nip\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"master_pegawai_nip_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_pegawai_nip_key",
+          "public",
+          "\"public\".\"master_pegawai\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.auth_group.auth_group_name_a6ea08ec_like",
+    "label": "Create index \"auth_group_name_a6ea08ec_like\" on \"auth_group\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "auth_group_name_a6ea08ec_like",
+        "table": "auth_group"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"auth_group_name_a6ea08ec_like\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_group_name_a6ea08ec_like\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"auth_group_name_a6ea08ec_like\"",
+        "sql": "CREATE INDEX \"auth_group_name_a6ea08ec_like\" ON \"public\".\"auth_group\" (\"name\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"auth_group_name_a6ea08ec_like\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_group_name_a6ea08ec_like\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.auth_group_permissions.auth_group_permissions_group_id_b120cbf9",
+    "label": "Create index \"auth_group_permissions_group_id_b120cbf9\" on \"auth_group_permissions\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "auth_group_permissions_group_id_b120cbf9",
+        "table": "auth_group_permissions"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"auth_group_permissions_group_id_b120cbf9\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_group_permissions_group_id_b120cbf9\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"auth_group_permissions_group_id_b120cbf9\"",
+        "sql": "CREATE INDEX \"auth_group_permissions_group_id_b120cbf9\" ON \"public\".\"auth_group_permissions\" (\"group_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"auth_group_permissions_group_id_b120cbf9\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_group_permissions_group_id_b120cbf9\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.auth_group_permissions.auth_group_permissions_permission_id_84c5c92e",
+    "label": "Create index \"auth_group_permissions_permission_id_84c5c92e\" on \"auth_group_permissions\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "auth_group_permissions_permission_id_84c5c92e",
+        "table": "auth_group_permissions"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"auth_group_permissions_permission_id_84c5c92e\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_group_permissions_permission_id_84c5c92e\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"auth_group_permissions_permission_id_84c5c92e\"",
+        "sql": "CREATE INDEX \"auth_group_permissions_permission_id_84c5c92e\" ON \"public\".\"auth_group_permissions\" (\"permission_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"auth_group_permissions_permission_id_84c5c92e\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_group_permissions_permission_id_84c5c92e\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.auth_permission.auth_permission_content_type_id_2f476e4b",
+    "label": "Create index \"auth_permission_content_type_id_2f476e4b\" on \"auth_permission\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "auth_permission_content_type_id_2f476e4b",
+        "table": "auth_permission"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"auth_permission_content_type_id_2f476e4b\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_permission_content_type_id_2f476e4b\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"auth_permission_content_type_id_2f476e4b\"",
+        "sql": "CREATE INDEX \"auth_permission_content_type_id_2f476e4b\" ON \"public\".\"auth_permission\" (\"content_type_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"auth_permission_content_type_id_2f476e4b\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_permission_content_type_id_2f476e4b\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.auth_user.auth_user_username_6821ab7c_like",
+    "label": "Create index \"auth_user_username_6821ab7c_like\" on \"auth_user\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "auth_user_username_6821ab7c_like",
+        "table": "auth_user"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"auth_user_username_6821ab7c_like\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_user_username_6821ab7c_like\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"auth_user_username_6821ab7c_like\"",
+        "sql": "CREATE INDEX \"auth_user_username_6821ab7c_like\" ON \"public\".\"auth_user\" (\"username\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"auth_user_username_6821ab7c_like\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_user_username_6821ab7c_like\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.auth_user_groups.auth_user_groups_group_id_97559544",
+    "label": "Create index \"auth_user_groups_group_id_97559544\" on \"auth_user_groups\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "auth_user_groups_group_id_97559544",
+        "table": "auth_user_groups"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"auth_user_groups_group_id_97559544\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_user_groups_group_id_97559544\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"auth_user_groups_group_id_97559544\"",
+        "sql": "CREATE INDEX \"auth_user_groups_group_id_97559544\" ON \"public\".\"auth_user_groups\" (\"group_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"auth_user_groups_group_id_97559544\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_user_groups_group_id_97559544\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.auth_user_groups.auth_user_groups_user_id_6a12ed8b",
+    "label": "Create index \"auth_user_groups_user_id_6a12ed8b\" on \"auth_user_groups\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "auth_user_groups_user_id_6a12ed8b",
+        "table": "auth_user_groups"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"auth_user_groups_user_id_6a12ed8b\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_user_groups_user_id_6a12ed8b\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"auth_user_groups_user_id_6a12ed8b\"",
+        "sql": "CREATE INDEX \"auth_user_groups_user_id_6a12ed8b\" ON \"public\".\"auth_user_groups\" (\"user_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"auth_user_groups_user_id_6a12ed8b\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_user_groups_user_id_6a12ed8b\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.auth_user_user_permissions.auth_user_user_permissions_permission_id_1fbb5f2c",
+    "label": "Create index \"auth_user_user_permissions_permission_id_1fbb5f2c\" on \"auth_user_user_permissions\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "auth_user_user_permissions_permission_id_1fbb5f2c",
+        "table": "auth_user_user_permissions"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"auth_user_user_permissions_permission_id_1fbb5f2c\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_user_user_permissions_permission_id_1fbb5f2c\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"auth_user_user_permissions_permission_id_1fbb5f2c\"",
+        "sql": "CREATE INDEX \"auth_user_user_permissions_permission_id_1fbb5f2c\" ON \"public\".\"auth_user_user_permissions\" (\"permission_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"auth_user_user_permissions_permission_id_1fbb5f2c\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_user_user_permissions_permission_id_1fbb5f2c\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.auth_user_user_permissions.auth_user_user_permissions_user_id_a95ead1b",
+    "label": "Create index \"auth_user_user_permissions_user_id_a95ead1b\" on \"auth_user_user_permissions\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "auth_user_user_permissions_user_id_a95ead1b",
+        "table": "auth_user_user_permissions"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"auth_user_user_permissions_user_id_a95ead1b\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_user_user_permissions_user_id_a95ead1b\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"auth_user_user_permissions_user_id_a95ead1b\"",
+        "sql": "CREATE INDEX \"auth_user_user_permissions_user_id_a95ead1b\" ON \"public\".\"auth_user_user_permissions\" (\"user_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"auth_user_user_permissions_user_id_a95ead1b\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"auth_user_user_permissions_user_id_a95ead1b\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.django_admin_log.django_admin_log_content_type_id_c4bce8eb",
+    "label": "Create index \"django_admin_log_content_type_id_c4bce8eb\" on \"django_admin_log\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "django_admin_log_content_type_id_c4bce8eb",
+        "table": "django_admin_log"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"django_admin_log_content_type_id_c4bce8eb\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"django_admin_log_content_type_id_c4bce8eb\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"django_admin_log_content_type_id_c4bce8eb\"",
+        "sql": "CREATE INDEX \"django_admin_log_content_type_id_c4bce8eb\" ON \"public\".\"django_admin_log\" (\"content_type_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"django_admin_log_content_type_id_c4bce8eb\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"django_admin_log_content_type_id_c4bce8eb\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.django_admin_log.django_admin_log_user_id_c564eba6",
+    "label": "Create index \"django_admin_log_user_id_c564eba6\" on \"django_admin_log\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "django_admin_log_user_id_c564eba6",
+        "table": "django_admin_log"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"django_admin_log_user_id_c564eba6\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"django_admin_log_user_id_c564eba6\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"django_admin_log_user_id_c564eba6\"",
+        "sql": "CREATE INDEX \"django_admin_log_user_id_c564eba6\" ON \"public\".\"django_admin_log\" (\"user_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"django_admin_log_user_id_c564eba6\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"django_admin_log_user_id_c564eba6\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.django_session.django_session_expire_date_a5c62663",
+    "label": "Create index \"django_session_expire_date_a5c62663\" on \"django_session\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "django_session_expire_date_a5c62663",
+        "table": "django_session"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"django_session_expire_date_a5c62663\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"django_session_expire_date_a5c62663\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"django_session_expire_date_a5c62663\"",
+        "sql": "CREATE INDEX \"django_session_expire_date_a5c62663\" ON \"public\".\"django_session\" (\"expire_date\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"django_session_expire_date_a5c62663\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"django_session_expire_date_a5c62663\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.django_session.django_session_session_key_c0390e0f_like",
+    "label": "Create index \"django_session_session_key_c0390e0f_like\" on \"django_session\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "django_session_session_key_c0390e0f_like",
+        "table": "django_session"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"django_session_session_key_c0390e0f_like\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"django_session_session_key_c0390e0f_like\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"django_session_session_key_c0390e0f_like\"",
+        "sql": "CREATE INDEX \"django_session_session_key_c0390e0f_like\" ON \"public\".\"django_session\" (\"session_key\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"django_session_session_key_c0390e0f_like\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"django_session_session_key_c0390e0f_like\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.master_aset.master_aset_kode_bmd_id_d5af848d",
+    "label": "Create index \"master_aset_kode_bmd_id_d5af848d\" on \"master_aset\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "master_aset_kode_bmd_id_d5af848d",
+        "table": "master_aset"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"master_aset_kode_bmd_id_d5af848d\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_aset_kode_bmd_id_d5af848d\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"master_aset_kode_bmd_id_d5af848d\"",
+        "sql": "CREATE INDEX \"master_aset_kode_bmd_id_d5af848d\" ON \"public\".\"master_aset\" (\"kode_bmd_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"master_aset_kode_bmd_id_d5af848d\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_aset_kode_bmd_id_d5af848d\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.master_cuti.master_cuti_pegawai_id_cc0111cf",
+    "label": "Create index \"master_cuti_pegawai_id_cc0111cf\" on \"master_cuti\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "master_cuti_pegawai_id_cc0111cf",
+        "table": "master_cuti"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"master_cuti_pegawai_id_cc0111cf\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_cuti_pegawai_id_cc0111cf\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"master_cuti_pegawai_id_cc0111cf\"",
+        "sql": "CREATE INDEX \"master_cuti_pegawai_id_cc0111cf\" ON \"public\".\"master_cuti\" (\"pegawai_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"master_cuti_pegawai_id_cc0111cf\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_cuti_pegawai_id_cc0111cf\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.master_kgb.master_kgb_pegawai_id_10aa3f26",
+    "label": "Create index \"master_kgb_pegawai_id_10aa3f26\" on \"master_kgb\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "master_kgb_pegawai_id_10aa3f26",
+        "table": "master_kgb"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"master_kgb_pegawai_id_10aa3f26\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_kgb_pegawai_id_10aa3f26\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"master_kgb_pegawai_id_10aa3f26\"",
+        "sql": "CREATE INDEX \"master_kgb_pegawai_id_10aa3f26\" ON \"public\".\"master_kgb\" (\"pegawai_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"master_kgb_pegawai_id_10aa3f26\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_kgb_pegawai_id_10aa3f26\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.master_kodebmd.master_kodebmd_parent_id_5626ee89",
+    "label": "Create index \"master_kodebmd_parent_id_5626ee89\" on \"master_kodebmd\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "master_kodebmd_parent_id_5626ee89",
+        "table": "master_kodebmd"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"master_kodebmd_parent_id_5626ee89\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_kodebmd_parent_id_5626ee89\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"master_kodebmd_parent_id_5626ee89\"",
+        "sql": "CREATE INDEX \"master_kodebmd_parent_id_5626ee89\" ON \"public\".\"master_kodebmd\" (\"parent_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"master_kodebmd_parent_id_5626ee89\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_kodebmd_parent_id_5626ee89\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.master_koderekening.master_koderekening_kode_078999bc_like",
+    "label": "Create index \"master_koderekening_kode_078999bc_like\" on \"master_koderekening\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "master_koderekening_kode_078999bc_like",
+        "table": "master_koderekening"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"master_koderekening_kode_078999bc_like\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_koderekening_kode_078999bc_like\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"master_koderekening_kode_078999bc_like\"",
+        "sql": "CREATE INDEX \"master_koderekening_kode_078999bc_like\" ON \"public\".\"master_koderekening\" (\"kode\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"master_koderekening_kode_078999bc_like\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_koderekening_kode_078999bc_like\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.master_kp.master_kp_pegawai_id_79f16391",
+    "label": "Create index \"master_kp_pegawai_id_79f16391\" on \"master_kp\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "master_kp_pegawai_id_79f16391",
+        "table": "master_kp"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"master_kp_pegawai_id_79f16391\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_kp_pegawai_id_79f16391\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"master_kp_pegawai_id_79f16391\"",
+        "sql": "CREATE INDEX \"master_kp_pegawai_id_79f16391\" ON \"public\".\"master_kp\" (\"pegawai_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"master_kp_pegawai_id_79f16391\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_kp_pegawai_id_79f16391\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.master_logwa.master_logwa_pegawai_id_a0e95877",
+    "label": "Create index \"master_logwa_pegawai_id_a0e95877\" on \"master_logwa\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "master_logwa_pegawai_id_a0e95877",
+        "table": "master_logwa"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"master_logwa_pegawai_id_a0e95877\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_logwa_pegawai_id_a0e95877\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"master_logwa_pegawai_id_a0e95877\"",
+        "sql": "CREATE INDEX \"master_logwa_pegawai_id_a0e95877\" ON \"public\".\"master_logwa\" (\"pegawai_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"master_logwa_pegawai_id_a0e95877\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_logwa_pegawai_id_a0e95877\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.master_pegawai.master_pegawai_nip_d1adc0b9_like",
+    "label": "Create index \"master_pegawai_nip_d1adc0b9_like\" on \"master_pegawai\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "master_pegawai_nip_d1adc0b9_like",
+        "table": "master_pegawai"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"master_pegawai_nip_d1adc0b9_like\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_pegawai_nip_d1adc0b9_like\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"master_pegawai_nip_d1adc0b9_like\"",
+        "sql": "CREATE INDEX \"master_pegawai_nip_d1adc0b9_like\" ON \"public\".\"master_pegawai\" (\"nip\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"master_pegawai_nip_d1adc0b9_like\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_pegawai_nip_d1adc0b9_like\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.master_pemegangaset.master_pemegangaset_aset_id_9bea47f5",
+    "label": "Create index \"master_pemegangaset_aset_id_9bea47f5\" on \"master_pemegangaset\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "master_pemegangaset_aset_id_9bea47f5",
+        "table": "master_pemegangaset"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"master_pemegangaset_aset_id_9bea47f5\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_pemegangaset_aset_id_9bea47f5\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"master_pemegangaset_aset_id_9bea47f5\"",
+        "sql": "CREATE INDEX \"master_pemegangaset_aset_id_9bea47f5\" ON \"public\".\"master_pemegangaset\" (\"aset_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"master_pemegangaset_aset_id_9bea47f5\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_pemegangaset_aset_id_9bea47f5\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.master_pemegangaset.master_pemegangaset_pegawai_id_270b5727",
+    "label": "Create index \"master_pemegangaset_pegawai_id_270b5727\" on \"master_pemegangaset\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "master_pemegangaset_pegawai_id_270b5727",
+        "table": "master_pemegangaset"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"master_pemegangaset_pegawai_id_270b5727\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_pemegangaset_pegawai_id_270b5727\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"master_pemegangaset_pegawai_id_270b5727\"",
+        "sql": "CREATE INDEX \"master_pemegangaset_pegawai_id_270b5727\" ON \"public\".\"master_pemegangaset\" (\"pegawai_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"master_pemegangaset_pegawai_id_270b5727\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_pemegangaset_pegawai_id_270b5727\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.master_pemegangkendaraan.master_pemegangkendaraan_kendaraan_id_49ad76d7",
+    "label": "Create index \"master_pemegangkendaraan_kendaraan_id_49ad76d7\" on \"master_pemegangkendaraan\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "master_pemegangkendaraan_kendaraan_id_49ad76d7",
+        "table": "master_pemegangkendaraan"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"master_pemegangkendaraan_kendaraan_id_49ad76d7\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_pemegangkendaraan_kendaraan_id_49ad76d7\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"master_pemegangkendaraan_kendaraan_id_49ad76d7\"",
+        "sql": "CREATE INDEX \"master_pemegangkendaraan_kendaraan_id_49ad76d7\" ON \"public\".\"master_pemegangkendaraan\" (\"kendaraan_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"master_pemegangkendaraan_kendaraan_id_49ad76d7\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_pemegangkendaraan_kendaraan_id_49ad76d7\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.master_pemegangkendaraan.master_pemegangkendaraan_pegawai_id_e3462423",
+    "label": "Create index \"master_pemegangkendaraan_pegawai_id_e3462423\" on \"master_pemegangkendaraan\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "master_pemegangkendaraan_pegawai_id_e3462423",
+        "table": "master_pemegangkendaraan"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"master_pemegangkendaraan_pegawai_id_e3462423\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_pemegangkendaraan_pegawai_id_e3462423\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"master_pemegangkendaraan_pegawai_id_e3462423\"",
+        "sql": "CREATE INDEX \"master_pemegangkendaraan_pegawai_id_e3462423\" ON \"public\".\"master_pemegangkendaraan\" (\"pegawai_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"master_pemegangkendaraan_pegawai_id_e3462423\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_pemegangkendaraan_pegawai_id_e3462423\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.master_servicebarang.master_servicebarang_aset_id_e5a8f20a",
+    "label": "Create index \"master_servicebarang_aset_id_e5a8f20a\" on \"master_servicebarang\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "master_servicebarang_aset_id_e5a8f20a",
+        "table": "master_servicebarang"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"master_servicebarang_aset_id_e5a8f20a\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_servicebarang_aset_id_e5a8f20a\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"master_servicebarang_aset_id_e5a8f20a\"",
+        "sql": "CREATE INDEX \"master_servicebarang_aset_id_e5a8f20a\" ON \"public\".\"master_servicebarang\" (\"aset_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"master_servicebarang_aset_id_e5a8f20a\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_servicebarang_aset_id_e5a8f20a\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.master_servicefile.master_servicefile_service_id_7d027653",
+    "label": "Create index \"master_servicefile_service_id_7d027653\" on \"master_servicefile\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "master_servicefile_service_id_7d027653",
+        "table": "master_servicefile"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"master_servicefile_service_id_7d027653\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_servicefile_service_id_7d027653\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"master_servicefile_service_id_7d027653\"",
+        "sql": "CREATE INDEX \"master_servicefile_service_id_7d027653\" ON \"public\".\"master_servicefile\" (\"service_id\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"master_servicefile_service_id_7d027653\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"master_servicefile_service_id_7d027653\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.auth_group_permissions.auth_group_permissio_permission_id_84c5c92e_fk_auth_perm",
+    "label": "Add foreign key \"auth_group_permissio_permission_id_84c5c92e_fk_auth_perm\" on \"auth_group_permissions\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "auth_group_permissio_permission_id_84c5c92e_fk_auth_perm",
+        "table": "auth_group_permissions"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"auth_group_permissio_permission_id_84c5c92e_fk_auth_perm\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_group_permissio_permission_id_84c5c92e_fk_auth_perm",
+          "public",
+          "\"public\".\"auth_group_permissions\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"auth_group_permissio_permission_id_84c5c92e_fk_auth_perm\"",
+        "sql": "ALTER TABLE \"public\".\"auth_group_permissions\"\nADD CONSTRAINT \"auth_group_permissio_permission_id_84c5c92e_fk_auth_perm\"\nFOREIGN KEY (\"permission_id\")\nREFERENCES \"public\".\"auth_permission\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"auth_group_permissio_permission_id_84c5c92e_fk_auth_perm\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_group_permissio_permission_id_84c5c92e_fk_auth_perm",
+          "public",
+          "\"public\".\"auth_group_permissions\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.auth_group_permissions.auth_group_permissions_group_id_b120cbf9_fk_auth_group_id",
+    "label": "Add foreign key \"auth_group_permissions_group_id_b120cbf9_fk_auth_group_id\" on \"auth_group_permissions\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "auth_group_permissions_group_id_b120cbf9_fk_auth_group_id",
+        "table": "auth_group_permissions"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"auth_group_permissions_group_id_b120cbf9_fk_auth_group_id\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_group_permissions_group_id_b120cbf9_fk_auth_group_id",
+          "public",
+          "\"public\".\"auth_group_permissions\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"auth_group_permissions_group_id_b120cbf9_fk_auth_group_id\"",
+        "sql": "ALTER TABLE \"public\".\"auth_group_permissions\"\nADD CONSTRAINT \"auth_group_permissions_group_id_b120cbf9_fk_auth_group_id\"\nFOREIGN KEY (\"group_id\")\nREFERENCES \"public\".\"auth_group\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"auth_group_permissions_group_id_b120cbf9_fk_auth_group_id\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_group_permissions_group_id_b120cbf9_fk_auth_group_id",
+          "public",
+          "\"public\".\"auth_group_permissions\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.auth_permission.auth_permission_content_type_id_2f476e4b_fk_django_co",
+    "label": "Add foreign key \"auth_permission_content_type_id_2f476e4b_fk_django_co\" on \"auth_permission\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "auth_permission_content_type_id_2f476e4b_fk_django_co",
+        "table": "auth_permission"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"auth_permission_content_type_id_2f476e4b_fk_django_co\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_permission_content_type_id_2f476e4b_fk_django_co",
+          "public",
+          "\"public\".\"auth_permission\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"auth_permission_content_type_id_2f476e4b_fk_django_co\"",
+        "sql": "ALTER TABLE \"public\".\"auth_permission\"\nADD CONSTRAINT \"auth_permission_content_type_id_2f476e4b_fk_django_co\"\nFOREIGN KEY (\"content_type_id\")\nREFERENCES \"public\".\"django_content_type\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"auth_permission_content_type_id_2f476e4b_fk_django_co\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_permission_content_type_id_2f476e4b_fk_django_co",
+          "public",
+          "\"public\".\"auth_permission\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.auth_user_groups.auth_user_groups_group_id_97559544_fk_auth_group_id",
+    "label": "Add foreign key \"auth_user_groups_group_id_97559544_fk_auth_group_id\" on \"auth_user_groups\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "auth_user_groups_group_id_97559544_fk_auth_group_id",
+        "table": "auth_user_groups"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"auth_user_groups_group_id_97559544_fk_auth_group_id\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_user_groups_group_id_97559544_fk_auth_group_id",
+          "public",
+          "\"public\".\"auth_user_groups\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"auth_user_groups_group_id_97559544_fk_auth_group_id\"",
+        "sql": "ALTER TABLE \"public\".\"auth_user_groups\"\nADD CONSTRAINT \"auth_user_groups_group_id_97559544_fk_auth_group_id\"\nFOREIGN KEY (\"group_id\")\nREFERENCES \"public\".\"auth_group\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"auth_user_groups_group_id_97559544_fk_auth_group_id\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_user_groups_group_id_97559544_fk_auth_group_id",
+          "public",
+          "\"public\".\"auth_user_groups\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.auth_user_groups.auth_user_groups_user_id_6a12ed8b_fk_auth_user_id",
+    "label": "Add foreign key \"auth_user_groups_user_id_6a12ed8b_fk_auth_user_id\" on \"auth_user_groups\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "auth_user_groups_user_id_6a12ed8b_fk_auth_user_id",
+        "table": "auth_user_groups"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"auth_user_groups_user_id_6a12ed8b_fk_auth_user_id\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_user_groups_user_id_6a12ed8b_fk_auth_user_id",
+          "public",
+          "\"public\".\"auth_user_groups\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"auth_user_groups_user_id_6a12ed8b_fk_auth_user_id\"",
+        "sql": "ALTER TABLE \"public\".\"auth_user_groups\"\nADD CONSTRAINT \"auth_user_groups_user_id_6a12ed8b_fk_auth_user_id\"\nFOREIGN KEY (\"user_id\")\nREFERENCES \"public\".\"auth_user\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"auth_user_groups_user_id_6a12ed8b_fk_auth_user_id\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_user_groups_user_id_6a12ed8b_fk_auth_user_id",
+          "public",
+          "\"public\".\"auth_user_groups\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.auth_user_user_permissions.auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm",
+    "label": "Add foreign key \"auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm\" on \"auth_user_user_permissions\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm",
+        "table": "auth_user_user_permissions"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm",
+          "public",
+          "\"public\".\"auth_user_user_permissions\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm\"",
+        "sql": "ALTER TABLE \"public\".\"auth_user_user_permissions\"\nADD CONSTRAINT \"auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm\"\nFOREIGN KEY (\"permission_id\")\nREFERENCES \"public\".\"auth_permission\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm",
+          "public",
+          "\"public\".\"auth_user_user_permissions\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.auth_user_user_permissions.auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id",
+    "label": "Add foreign key \"auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id\" on \"auth_user_user_permissions\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id",
+        "table": "auth_user_user_permissions"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id",
+          "public",
+          "\"public\".\"auth_user_user_permissions\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id\"",
+        "sql": "ALTER TABLE \"public\".\"auth_user_user_permissions\"\nADD CONSTRAINT \"auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id\"\nFOREIGN KEY (\"user_id\")\nREFERENCES \"public\".\"auth_user\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id",
+          "public",
+          "\"public\".\"auth_user_user_permissions\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.django_admin_log.django_admin_log_content_type_id_c4bce8eb_fk_django_co",
+    "label": "Add foreign key \"django_admin_log_content_type_id_c4bce8eb_fk_django_co\" on \"django_admin_log\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "django_admin_log_content_type_id_c4bce8eb_fk_django_co",
+        "table": "django_admin_log"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"django_admin_log_content_type_id_c4bce8eb_fk_django_co\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "django_admin_log_content_type_id_c4bce8eb_fk_django_co",
+          "public",
+          "\"public\".\"django_admin_log\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"django_admin_log_content_type_id_c4bce8eb_fk_django_co\"",
+        "sql": "ALTER TABLE \"public\".\"django_admin_log\"\nADD CONSTRAINT \"django_admin_log_content_type_id_c4bce8eb_fk_django_co\"\nFOREIGN KEY (\"content_type_id\")\nREFERENCES \"public\".\"django_content_type\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"django_admin_log_content_type_id_c4bce8eb_fk_django_co\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "django_admin_log_content_type_id_c4bce8eb_fk_django_co",
+          "public",
+          "\"public\".\"django_admin_log\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.django_admin_log.django_admin_log_user_id_c564eba6_fk_auth_user_id",
+    "label": "Add foreign key \"django_admin_log_user_id_c564eba6_fk_auth_user_id\" on \"django_admin_log\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "django_admin_log_user_id_c564eba6_fk_auth_user_id",
+        "table": "django_admin_log"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"django_admin_log_user_id_c564eba6_fk_auth_user_id\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "django_admin_log_user_id_c564eba6_fk_auth_user_id",
+          "public",
+          "\"public\".\"django_admin_log\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"django_admin_log_user_id_c564eba6_fk_auth_user_id\"",
+        "sql": "ALTER TABLE \"public\".\"django_admin_log\"\nADD CONSTRAINT \"django_admin_log_user_id_c564eba6_fk_auth_user_id\"\nFOREIGN KEY (\"user_id\")\nREFERENCES \"public\".\"auth_user\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"django_admin_log_user_id_c564eba6_fk_auth_user_id\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "django_admin_log_user_id_c564eba6_fk_auth_user_id",
+          "public",
+          "\"public\".\"django_admin_log\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.master_aset.master_aset_kode_bmd_id_d5af848d_fk_master_kodebmd_id",
+    "label": "Add foreign key \"master_aset_kode_bmd_id_d5af848d_fk_master_kodebmd_id\" on \"master_aset\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "master_aset_kode_bmd_id_d5af848d_fk_master_kodebmd_id",
+        "table": "master_aset"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"master_aset_kode_bmd_id_d5af848d_fk_master_kodebmd_id\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_aset_kode_bmd_id_d5af848d_fk_master_kodebmd_id",
+          "public",
+          "\"public\".\"master_aset\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"master_aset_kode_bmd_id_d5af848d_fk_master_kodebmd_id\"",
+        "sql": "ALTER TABLE \"public\".\"master_aset\"\nADD CONSTRAINT \"master_aset_kode_bmd_id_d5af848d_fk_master_kodebmd_id\"\nFOREIGN KEY (\"kode_bmd_id\")\nREFERENCES \"public\".\"master_kodebmd\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"master_aset_kode_bmd_id_d5af848d_fk_master_kodebmd_id\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_aset_kode_bmd_id_d5af848d_fk_master_kodebmd_id",
+          "public",
+          "\"public\".\"master_aset\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.master_cuti.master_cuti_pegawai_id_cc0111cf_fk_master_pegawai_id",
+    "label": "Add foreign key \"master_cuti_pegawai_id_cc0111cf_fk_master_pegawai_id\" on \"master_cuti\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "master_cuti_pegawai_id_cc0111cf_fk_master_pegawai_id",
+        "table": "master_cuti"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"master_cuti_pegawai_id_cc0111cf_fk_master_pegawai_id\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_cuti_pegawai_id_cc0111cf_fk_master_pegawai_id",
+          "public",
+          "\"public\".\"master_cuti\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"master_cuti_pegawai_id_cc0111cf_fk_master_pegawai_id\"",
+        "sql": "ALTER TABLE \"public\".\"master_cuti\"\nADD CONSTRAINT \"master_cuti_pegawai_id_cc0111cf_fk_master_pegawai_id\"\nFOREIGN KEY (\"pegawai_id\")\nREFERENCES \"public\".\"master_pegawai\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"master_cuti_pegawai_id_cc0111cf_fk_master_pegawai_id\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_cuti_pegawai_id_cc0111cf_fk_master_pegawai_id",
+          "public",
+          "\"public\".\"master_cuti\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.master_cutisaldo.master_cutisaldo_pegawai_id_34046fd1_fk_master_pegawai_id",
+    "label": "Add foreign key \"master_cutisaldo_pegawai_id_34046fd1_fk_master_pegawai_id\" on \"master_cutisaldo\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "master_cutisaldo_pegawai_id_34046fd1_fk_master_pegawai_id",
+        "table": "master_cutisaldo"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"master_cutisaldo_pegawai_id_34046fd1_fk_master_pegawai_id\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_cutisaldo_pegawai_id_34046fd1_fk_master_pegawai_id",
+          "public",
+          "\"public\".\"master_cutisaldo\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"master_cutisaldo_pegawai_id_34046fd1_fk_master_pegawai_id\"",
+        "sql": "ALTER TABLE \"public\".\"master_cutisaldo\"\nADD CONSTRAINT \"master_cutisaldo_pegawai_id_34046fd1_fk_master_pegawai_id\"\nFOREIGN KEY (\"pegawai_id\")\nREFERENCES \"public\".\"master_pegawai\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"master_cutisaldo_pegawai_id_34046fd1_fk_master_pegawai_id\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_cutisaldo_pegawai_id_34046fd1_fk_master_pegawai_id",
+          "public",
+          "\"public\".\"master_cutisaldo\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.master_kgb.master_kgb_pegawai_id_10aa3f26_fk_master_pegawai_id",
+    "label": "Add foreign key \"master_kgb_pegawai_id_10aa3f26_fk_master_pegawai_id\" on \"master_kgb\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "master_kgb_pegawai_id_10aa3f26_fk_master_pegawai_id",
+        "table": "master_kgb"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"master_kgb_pegawai_id_10aa3f26_fk_master_pegawai_id\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_kgb_pegawai_id_10aa3f26_fk_master_pegawai_id",
+          "public",
+          "\"public\".\"master_kgb\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"master_kgb_pegawai_id_10aa3f26_fk_master_pegawai_id\"",
+        "sql": "ALTER TABLE \"public\".\"master_kgb\"\nADD CONSTRAINT \"master_kgb_pegawai_id_10aa3f26_fk_master_pegawai_id\"\nFOREIGN KEY (\"pegawai_id\")\nREFERENCES \"public\".\"master_pegawai\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"master_kgb_pegawai_id_10aa3f26_fk_master_pegawai_id\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_kgb_pegawai_id_10aa3f26_fk_master_pegawai_id",
+          "public",
+          "\"public\".\"master_kgb\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.master_kodebmd.master_kodebmd_parent_id_5626ee89_fk_master_kodebmd_id",
+    "label": "Add foreign key \"master_kodebmd_parent_id_5626ee89_fk_master_kodebmd_id\" on \"master_kodebmd\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "master_kodebmd_parent_id_5626ee89_fk_master_kodebmd_id",
+        "table": "master_kodebmd"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"master_kodebmd_parent_id_5626ee89_fk_master_kodebmd_id\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_kodebmd_parent_id_5626ee89_fk_master_kodebmd_id",
+          "public",
+          "\"public\".\"master_kodebmd\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"master_kodebmd_parent_id_5626ee89_fk_master_kodebmd_id\"",
+        "sql": "ALTER TABLE \"public\".\"master_kodebmd\"\nADD CONSTRAINT \"master_kodebmd_parent_id_5626ee89_fk_master_kodebmd_id\"\nFOREIGN KEY (\"parent_id\")\nREFERENCES \"public\".\"master_kodebmd\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"master_kodebmd_parent_id_5626ee89_fk_master_kodebmd_id\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_kodebmd_parent_id_5626ee89_fk_master_kodebmd_id",
+          "public",
+          "\"public\".\"master_kodebmd\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.master_kp.master_kp_pegawai_id_79f16391_fk_master_pegawai_id",
+    "label": "Add foreign key \"master_kp_pegawai_id_79f16391_fk_master_pegawai_id\" on \"master_kp\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "master_kp_pegawai_id_79f16391_fk_master_pegawai_id",
+        "table": "master_kp"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"master_kp_pegawai_id_79f16391_fk_master_pegawai_id\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_kp_pegawai_id_79f16391_fk_master_pegawai_id",
+          "public",
+          "\"public\".\"master_kp\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"master_kp_pegawai_id_79f16391_fk_master_pegawai_id\"",
+        "sql": "ALTER TABLE \"public\".\"master_kp\"\nADD CONSTRAINT \"master_kp_pegawai_id_79f16391_fk_master_pegawai_id\"\nFOREIGN KEY (\"pegawai_id\")\nREFERENCES \"public\".\"master_pegawai\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"master_kp_pegawai_id_79f16391_fk_master_pegawai_id\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_kp_pegawai_id_79f16391_fk_master_pegawai_id",
+          "public",
+          "\"public\".\"master_kp\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.master_logwa.master_logwa_pegawai_id_a0e95877_fk_master_pegawai_id",
+    "label": "Add foreign key \"master_logwa_pegawai_id_a0e95877_fk_master_pegawai_id\" on \"master_logwa\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "master_logwa_pegawai_id_a0e95877_fk_master_pegawai_id",
+        "table": "master_logwa"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"master_logwa_pegawai_id_a0e95877_fk_master_pegawai_id\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_logwa_pegawai_id_a0e95877_fk_master_pegawai_id",
+          "public",
+          "\"public\".\"master_logwa\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"master_logwa_pegawai_id_a0e95877_fk_master_pegawai_id\"",
+        "sql": "ALTER TABLE \"public\".\"master_logwa\"\nADD CONSTRAINT \"master_logwa_pegawai_id_a0e95877_fk_master_pegawai_id\"\nFOREIGN KEY (\"pegawai_id\")\nREFERENCES \"public\".\"master_pegawai\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"master_logwa_pegawai_id_a0e95877_fk_master_pegawai_id\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_logwa_pegawai_id_a0e95877_fk_master_pegawai_id",
+          "public",
+          "\"public\".\"master_logwa\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.master_pemegangaset.master_pemegangaset_aset_id_9bea47f5_fk_master_aset_id",
+    "label": "Add foreign key \"master_pemegangaset_aset_id_9bea47f5_fk_master_aset_id\" on \"master_pemegangaset\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "master_pemegangaset_aset_id_9bea47f5_fk_master_aset_id",
+        "table": "master_pemegangaset"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"master_pemegangaset_aset_id_9bea47f5_fk_master_aset_id\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_pemegangaset_aset_id_9bea47f5_fk_master_aset_id",
+          "public",
+          "\"public\".\"master_pemegangaset\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"master_pemegangaset_aset_id_9bea47f5_fk_master_aset_id\"",
+        "sql": "ALTER TABLE \"public\".\"master_pemegangaset\"\nADD CONSTRAINT \"master_pemegangaset_aset_id_9bea47f5_fk_master_aset_id\"\nFOREIGN KEY (\"aset_id\")\nREFERENCES \"public\".\"master_aset\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"master_pemegangaset_aset_id_9bea47f5_fk_master_aset_id\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_pemegangaset_aset_id_9bea47f5_fk_master_aset_id",
+          "public",
+          "\"public\".\"master_pemegangaset\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.master_pemegangaset.master_pemegangaset_pegawai_id_270b5727_fk_master_pegawai_id",
+    "label": "Add foreign key \"master_pemegangaset_pegawai_id_270b5727_fk_master_pegawai_id\" on \"master_pemegangaset\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "master_pemegangaset_pegawai_id_270b5727_fk_master_pegawai_id",
+        "table": "master_pemegangaset"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"master_pemegangaset_pegawai_id_270b5727_fk_master_pegawai_id\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_pemegangaset_pegawai_id_270b5727_fk_master_pegawai_id",
+          "public",
+          "\"public\".\"master_pemegangaset\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"master_pemegangaset_pegawai_id_270b5727_fk_master_pegawai_id\"",
+        "sql": "ALTER TABLE \"public\".\"master_pemegangaset\"\nADD CONSTRAINT \"master_pemegangaset_pegawai_id_270b5727_fk_master_pegawai_id\"\nFOREIGN KEY (\"pegawai_id\")\nREFERENCES \"public\".\"master_pegawai\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"master_pemegangaset_pegawai_id_270b5727_fk_master_pegawai_id\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_pemegangaset_pegawai_id_270b5727_fk_master_pegawai_id",
+          "public",
+          "\"public\".\"master_pemegangaset\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.master_pemegangkendaraan.master_pemegangkenda_kendaraan_id_49ad76d7_fk_master_ke",
+    "label": "Add foreign key \"master_pemegangkenda_kendaraan_id_49ad76d7_fk_master_ke\" on \"master_pemegangkendaraan\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "master_pemegangkenda_kendaraan_id_49ad76d7_fk_master_ke",
+        "table": "master_pemegangkendaraan"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"master_pemegangkenda_kendaraan_id_49ad76d7_fk_master_ke\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_pemegangkenda_kendaraan_id_49ad76d7_fk_master_ke",
+          "public",
+          "\"public\".\"master_pemegangkendaraan\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"master_pemegangkenda_kendaraan_id_49ad76d7_fk_master_ke\"",
+        "sql": "ALTER TABLE \"public\".\"master_pemegangkendaraan\"\nADD CONSTRAINT \"master_pemegangkenda_kendaraan_id_49ad76d7_fk_master_ke\"\nFOREIGN KEY (\"kendaraan_id\")\nREFERENCES \"public\".\"master_kendaraan\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"master_pemegangkenda_kendaraan_id_49ad76d7_fk_master_ke\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_pemegangkenda_kendaraan_id_49ad76d7_fk_master_ke",
+          "public",
+          "\"public\".\"master_pemegangkendaraan\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.master_pemegangkendaraan.master_pemegangkenda_pegawai_id_e3462423_fk_master_pe",
+    "label": "Add foreign key \"master_pemegangkenda_pegawai_id_e3462423_fk_master_pe\" on \"master_pemegangkendaraan\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "master_pemegangkenda_pegawai_id_e3462423_fk_master_pe",
+        "table": "master_pemegangkendaraan"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"master_pemegangkenda_pegawai_id_e3462423_fk_master_pe\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_pemegangkenda_pegawai_id_e3462423_fk_master_pe",
+          "public",
+          "\"public\".\"master_pemegangkendaraan\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"master_pemegangkenda_pegawai_id_e3462423_fk_master_pe\"",
+        "sql": "ALTER TABLE \"public\".\"master_pemegangkendaraan\"\nADD CONSTRAINT \"master_pemegangkenda_pegawai_id_e3462423_fk_master_pe\"\nFOREIGN KEY (\"pegawai_id\")\nREFERENCES \"public\".\"master_pegawai\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"master_pemegangkenda_pegawai_id_e3462423_fk_master_pe\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_pemegangkenda_pegawai_id_e3462423_fk_master_pe",
+          "public",
+          "\"public\".\"master_pemegangkendaraan\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.master_servicebarang.master_servicebarang_aset_id_e5a8f20a_fk_master_aset_id",
+    "label": "Add foreign key \"master_servicebarang_aset_id_e5a8f20a_fk_master_aset_id\" on \"master_servicebarang\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "master_servicebarang_aset_id_e5a8f20a_fk_master_aset_id",
+        "table": "master_servicebarang"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"master_servicebarang_aset_id_e5a8f20a_fk_master_aset_id\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_servicebarang_aset_id_e5a8f20a_fk_master_aset_id",
+          "public",
+          "\"public\".\"master_servicebarang\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"master_servicebarang_aset_id_e5a8f20a_fk_master_aset_id\"",
+        "sql": "ALTER TABLE \"public\".\"master_servicebarang\"\nADD CONSTRAINT \"master_servicebarang_aset_id_e5a8f20a_fk_master_aset_id\"\nFOREIGN KEY (\"aset_id\")\nREFERENCES \"public\".\"master_aset\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"master_servicebarang_aset_id_e5a8f20a_fk_master_aset_id\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_servicebarang_aset_id_e5a8f20a_fk_master_aset_id",
+          "public",
+          "\"public\".\"master_servicebarang\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.master_servicefile.master_servicefile_service_id_7d027653_fk_master_se",
+    "label": "Add foreign key \"master_servicefile_service_id_7d027653_fk_master_se\" on \"master_servicefile\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "master_servicefile_service_id_7d027653_fk_master_se",
+        "table": "master_servicefile"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"master_servicefile_service_id_7d027653_fk_master_se\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_servicefile_service_id_7d027653_fk_master_se",
+          "public",
+          "\"public\".\"master_servicefile\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"master_servicefile_service_id_7d027653_fk_master_se\"",
+        "sql": "ALTER TABLE \"public\".\"master_servicefile\"\nADD CONSTRAINT \"master_servicefile_service_id_7d027653_fk_master_se\"\nFOREIGN KEY (\"service_id\")\nREFERENCES \"public\".\"master_servicebarang\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"master_servicefile_service_id_7d027653_fk_master_se\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "master_servicefile_service_id_7d027653_fk_master_se",
+          "public",
+          "\"public\".\"master_servicefile\""
+        ]
+      }
+    ]
+  }
+]

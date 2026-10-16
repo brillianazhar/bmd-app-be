@@ -1,0 +1,44 @@
+[
+  {
+    "id": "dropColumn.master_masterbarang.kategori",
+    "label": "Drop column \"kategori\" from \"master_masterbarang\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "kategori",
+        "table": "master_masterbarang"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"kategori\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "master_masterbarang",
+          "kategori"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop column \"kategori\"",
+        "sql": "ALTER TABLE \"public\".\"master_masterbarang\" DROP COLUMN \"kategori\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"kategori\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "master_masterbarang",
+          "kategori"
+        ]
+      }
+    ]
+  }
+]

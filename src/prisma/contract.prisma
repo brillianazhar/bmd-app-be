@@ -109,7 +109,7 @@ model DjangoAdminLog {
 
   @@index([contentTypeId], map: "django_admin_log_content_type_id_c4bce8eb")
   @@index([userId], map: "django_admin_log_user_id_c564eba6")
-  @@check(expression: "(action_flag >= 0)", map: "django_admin_log_action_flag_check")
+  @@check(expression: sql`(action_flag >= 0)`, map: "django_admin_log_action_flag_check")
   @@map("django_admin_log")
 }
 
@@ -260,6 +260,8 @@ model MasterKoderekening {
   deletedAt TimestamptzString? @map("deleted_at")
   updatedAt TimestamptzString  @default(now()) @map("updated_at")
 
+  barang MasterMasterbarang[]
+
   @@index([kode], map: "master_koderekening_kode_078999bc_like")
   @@map("master_koderekening")
 }
@@ -303,11 +305,16 @@ model MasterLogwa {
 }
 
 model MasterMasterbarang {
-  id           BigInt        @id(map: "master_masterbarang_pkey") @default(autoincrement())
-  kodeRekening VarChar(50)   @map("kode_rekening")
-  kategori     VarChar(100)?
-  namaBarang   VarChar(255)  @map("nama_barang")
+  id             BigInt             @id(map: "master_masterbarang_pkey") @default(autoincrement())
+  kodeRekeningId BigInt             @map("kode_rekening_id")
+  namaBarang     VarChar(255)       @map("nama_barang")
+  createdAt      TimestamptzString  @default(now()) @map("created_at")
+  deletedAt      TimestamptzString? @map("deleted_at")
+  updatedAt      TimestamptzString  @default(now()) @map("updated_at")
 
+  koderekening MasterKoderekening @relation(fields: [kodeRekeningId], references: [id])
+
+  @@index([kodeRekeningId])
   @@map("master_masterbarang")
 }
 

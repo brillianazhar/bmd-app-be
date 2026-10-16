@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'8486497db59263c716c2fa12b44f2b6cfb072a500c70466fd756fe0a5ff5e2d0'>;
+  StorageHashBase<'9c10bd148e70f55d46f14b2b19a1619c31feb1420031e2318fbca4619789d70c'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -401,10 +401,12 @@ export type FieldOutputTypes = {
       readonly tipe: Varchar<10>;
     };
     readonly MasterMasterbarang: {
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly deletedAt: CodecTypes['pg/timestamptz-string@1']['output'] | null;
       readonly id: CodecTypes['pg/int8@1']['output'];
-      readonly kategori: Varchar<100> | null;
-      readonly kodeRekening: Varchar<50>;
+      readonly kodeRekeningId: CodecTypes['pg/int8@1']['output'];
       readonly namaBarang: Varchar<255>;
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     };
     readonly MasterPegawai: {
       readonly foto: Varchar<100> | null;
@@ -641,10 +643,12 @@ export type FieldInputTypes = {
       readonly tipe: CodecTypes['sql/varchar@1']['input'];
     };
     readonly MasterMasterbarang: {
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly deletedAt: CodecTypes['pg/timestamptz-string@1']['input'] | null;
       readonly id: CodecTypes['pg/int8@1']['input'];
-      readonly kategori: CodecTypes['sql/varchar@1']['input'] | null;
-      readonly kodeRekening: CodecTypes['sql/varchar@1']['input'];
+      readonly kodeRekeningId: CodecTypes['pg/int8@1']['input'];
       readonly namaBarang: CodecTypes['sql/varchar@1']['input'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
     };
     readonly MasterPegawai: {
       readonly foto: CodecTypes['sql/varchar@1']['input'] | null;
@@ -881,10 +885,12 @@ export type StorageColumnTypes = {
       readonly tipe: Varchar<10>;
     };
     readonly master_masterbarang: {
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly deleted_at: CodecTypes['pg/timestamptz-string@1']['output'] | null;
       readonly id: CodecTypes['pg/int8@1']['output'];
-      readonly kategori: Varchar<100> | null;
-      readonly kode_rekening: Varchar<50>;
+      readonly kode_rekening_id: CodecTypes['pg/int8@1']['output'];
       readonly nama_barang: Varchar<255>;
+      readonly updated_at: CodecTypes['pg/timestamptz-string@1']['output'];
     };
     readonly master_pegawai: {
       readonly foto: Varchar<100> | null;
@@ -1121,10 +1127,12 @@ export type StorageColumnInputTypes = {
       readonly tipe: CodecTypes['sql/varchar@1']['input'];
     };
     readonly master_masterbarang: {
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly deleted_at: CodecTypes['pg/timestamptz-string@1']['input'] | null;
       readonly id: CodecTypes['pg/int8@1']['input'];
-      readonly kategori: CodecTypes['sql/varchar@1']['input'] | null;
-      readonly kode_rekening: CodecTypes['sql/varchar@1']['input'];
+      readonly kode_rekening_id: CodecTypes['pg/int8@1']['input'];
       readonly nama_barang: CodecTypes['sql/varchar@1']['input'];
+      readonly updated_at: CodecTypes['pg/timestamptz-string@1']['input'];
     };
     readonly master_pegawai: {
       readonly foto: CodecTypes['sql/varchar@1']['input'] | null;
@@ -1375,7 +1383,8 @@ export namespace Models {
     kategori: Varchar<100>;
     kode: Varchar<50>;
     updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
-    readonly [RelationKeys]?: never;
+    barang: public_MasterMasterbarang[];
+    readonly [RelationKeys]?: 'barang';
   };
   export type public_MasterKp = {
     fileSk: Varchar<100> | null;
@@ -1410,11 +1419,14 @@ export namespace Models {
     readonly [RelationKeys]?: 'pegawai';
   };
   export type public_MasterMasterbarang = {
+    createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    deletedAt: CodecTypes['pg/timestamptz-string@1']['output'] | null;
     id: CodecTypes['pg/int8@1']['output'];
-    kategori: Varchar<100> | null;
-    kodeRekening: Varchar<50>;
+    kodeRekeningId: CodecTypes['pg/int8@1']['output'];
     namaBarang: Varchar<255>;
-    readonly [RelationKeys]?: never;
+    updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    koderekening: public_MasterKoderekening;
+    readonly [RelationKeys]?: 'koderekening';
   };
   export type public_MasterPegawai = {
     foto: Varchar<100> | null;
@@ -3016,6 +3028,19 @@ type ContractBase = Omit<
             };
             readonly master_masterbarang: {
               columns: {
+                readonly created_at: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                  readonly many: false;
+                };
+                readonly deleted_at: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
                 readonly id: {
                   readonly dataType: 'pg/int8';
                   readonly codecId: 'pg/int8@1';
@@ -3026,18 +3051,10 @@ type ContractBase = Omit<
                   };
                   readonly many: false;
                 };
-                readonly kategori: {
-                  readonly dataType: 'pg/varchar';
-                  readonly codecId: 'sql/varchar@1';
-                  readonly nullable: true;
-                  readonly typeParams: { readonly length: 100 };
-                  readonly many: false;
-                };
-                readonly kode_rekening: {
-                  readonly dataType: 'pg/varchar';
-                  readonly codecId: 'sql/varchar@1';
+                readonly kode_rekening_id: {
+                  readonly dataType: 'pg/int8';
+                  readonly codecId: 'pg/int8@1';
                   readonly nullable: false;
-                  readonly typeParams: { readonly length: 50 };
                   readonly many: false;
                 };
                 readonly nama_barang: {
@@ -3047,14 +3064,41 @@ type ContractBase = Omit<
                   readonly typeParams: { readonly length: 255 };
                   readonly many: false;
                 };
+                readonly updated_at: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                  readonly many: false;
+                };
               };
               primaryKey: {
                 readonly columns: readonly ['id'];
                 readonly name: 'master_masterbarang_pkey';
               };
               uniques: readonly [];
-              indexes: readonly [];
-              foreignKeys: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'master_masterbarang_kode_rekening_id_idx_a47ac379';
+                  readonly prefix: 'master_masterbarang_kode_rekening_id_idx';
+                  readonly columns: readonly ['kode_rekening_id'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'master_masterbarang';
+                    readonly columns: readonly ['kode_rekening_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'master_koderekening';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
             };
             readonly master_pegawai: {
               columns: {
@@ -4910,7 +4954,19 @@ type ContractBase = Omit<
                 };
               };
             };
-            readonly relations: Record<string, never>;
+            readonly relations: {
+              readonly barang: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'MasterMasterbarang';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['kodeRekeningId'];
+                };
+              };
+            };
             readonly storage: {
               readonly table: 'master_koderekening';
               readonly namespaceId: 'public';
@@ -5137,25 +5193,27 @@ type ContractBase = Omit<
           };
           readonly MasterMasterbarang: {
             readonly fields: {
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly deletedAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
               readonly id: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int8@1' };
               };
-              readonly kategori: {
-                readonly nullable: true;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'sql/varchar@1';
-                  readonly typeParams: { readonly length: 100 };
-                };
-              };
-              readonly kodeRekening: {
+              readonly kodeRekeningId: {
                 readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'sql/varchar@1';
-                  readonly typeParams: { readonly length: 50 };
-                };
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int8@1' };
               };
               readonly namaBarang: {
                 readonly nullable: false;
@@ -5165,16 +5223,38 @@ type ContractBase = Omit<
                   readonly typeParams: { readonly length: 255 };
                 };
               };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
             };
-            readonly relations: Record<string, never>;
+            readonly relations: {
+              readonly koderekening: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'MasterKoderekening';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['kodeRekeningId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
             readonly storage: {
               readonly table: 'master_masterbarang';
               readonly namespaceId: 'public';
               readonly fields: {
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly deletedAt: { readonly column: 'deleted_at' };
                 readonly id: { readonly column: 'id' };
-                readonly kategori: { readonly column: 'kategori' };
-                readonly kodeRekening: { readonly column: 'kode_rekening' };
+                readonly kodeRekeningId: { readonly column: 'kode_rekening_id' };
                 readonly namaBarang: { readonly column: 'nama_barang' };
+                readonly updatedAt: { readonly column: 'updated_at' };
               };
             };
           };
