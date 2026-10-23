@@ -19,8 +19,8 @@ export class CreateMasterBarangDto {
   kodeRekeningId!: number;
 
   @Transform(trim)
-  @IsString()
-  @IsNotEmpty({ message: 'namaBarang wajib diisi' })
-  @MaxLength(255)
+  @IsString({ message: 'namaBarang must be a string' })
+  @IsNotEmpty({ message: 'namaBarang should not be empty' })
+  @MaxLength(255, { message: 'Maximum 255 character' })
   namaBarang!: string;
 }

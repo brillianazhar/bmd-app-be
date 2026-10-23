@@ -25,7 +25,7 @@ export class QueryMasterBarangDto {
 
   @IsOptional()
   @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
-  @IsString()
+  @IsString({ message: 'search must be a string' })
   @MaxLength(100)
   search?: string;
 }

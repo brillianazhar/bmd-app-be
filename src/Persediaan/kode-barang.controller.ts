@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -12,6 +14,7 @@ import { KodeBarangService } from './kode-barang.service.js';
 import { CreateKodeBarangDto } from './dto/create-kode-barang.dto.js';
 import { UpdateKodeBarangDto } from './dto/update-kode-barang.dto.js';
 import { BulkDeleteKodeBarangDto } from './dto/bulk-delete-kode-barang.dto.js';
+import { QueryKodeBarangDto } from './dto/query-kode-barang.dto.js';
 
 @Controller('kode-barang')
 export class KodeBarangController {
@@ -22,13 +25,18 @@ export class KodeBarangController {
     return this.kodeBarangService.create(dto);
   }
 
+  // @Get()
+  // findAll(
+  //   @Query('page') page?: string,
+  //   @Query('limit') limit?: string,
+  //   @Query('search') search?: string,
+  // ) {
+  //   return this.kodeBarangService.findAll(page, limit, search);
+  // }
+
   @Get()
-  findAll(
-    @Query('page') page?: string,
-    @Query('limit') limit?: string,
-    @Query('search') search?: string,
-  ) {
-    return this.kodeBarangService.findAll(page, limit, search);
+  findAll(@Query() query: QueryKodeBarangDto) {
+    return this.kodeBarangService.findAll(query);
   }
 
   @Patch(':id')
@@ -41,8 +49,14 @@ export class KodeBarangController {
     return this.kodeBarangService.remove(id);
   }
 
-  @Delete()
+  @Post('bulk-delete')
+  @HttpCode(HttpStatus.OK)
   removeMany(@Body() dto: BulkDeleteKodeBarangDto) {
     return this.kodeBarangService.removeMany(dto);
   }
+
+  // @Delete()
+  // removeMany(@Body() dto: BulkDeleteKodeBarangDto) {
+  //   return this.kodeBarangService.removeMany(dto);
+  // }
 }

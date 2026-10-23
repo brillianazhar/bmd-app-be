@@ -3,17 +3,19 @@ import {
   ArrayNotEmpty,
   ArrayUnique,
   IsArray,
+  IsString,
   Matches,
 } from 'class-validator';
 
 export class BulkDeleteKodeBarangDto {
-  @IsArray({ message: 'ids harus berupa array' })
-  @ArrayNotEmpty({ message: 'ids tidak boleh kosong' })
-  @ArrayMaxSize(100, { message: 'Maksimal 100 data per permintaan' })
-  @ArrayUnique({ message: 'ids tidak boleh duplikat' })
-  @Matches(/^[1-9]\d*$/, {
+  @IsArray({ message: 'IDs must be an array' })
+  @ArrayNotEmpty({ message: 'IDs should not be empty' })
+  @ArrayMaxSize(100, { message: 'Maximum 100 items per request' })
+  @ArrayUnique({ message: 'IDs must not contain duplicate values' })
+  @IsString({ each: true, message: 'Each ID must be a string' })
+  @Matches(/^[1-9]\d{0,18}$/, {
     each: true,
-    message: 'Setiap ID harus berupa angka bulat positif',
+    message: 'Each ID must be a positive integer',
   })
   ids!: string[];
 }

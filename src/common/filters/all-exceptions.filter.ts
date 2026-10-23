@@ -28,7 +28,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
     let body: ErrorBody = {
       success: false,
-      message: 'Terjadi kesalahan pada server',
+      message: 'Internal server error',
       data: null,
     };
 
@@ -43,7 +43,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         // error dari class-validator
         body = {
           success: false,
-          message: 'Validasi gagal',
+          message: 'Validation error',
           errors: r.message,
           data: null,
         };
@@ -55,7 +55,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         body = { success: false, message: exception.message, data: null };
       }
     } else {
-      // error tak terduga: catat lengkap di log, jangan bocorkan ke client
+      // error tidak terduga: catat lengkap di log, jangan bocorkan ke client
       this.logger.error(
         exception instanceof Error ? exception.message : String(exception),
         exception instanceof Error ? exception.stack : undefined,

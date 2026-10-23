@@ -10,6 +10,7 @@ import { or } from '@prisma/orm-postgres/orm-client';
 import { Varchar } from '@prisma/orm-postgres/target/codec-types';
 import { UpdateKodeBarangDto } from './dto/update-kode-barang.dto.js';
 import { BulkDeleteKodeBarangDto } from './dto/bulk-delete-kode-barang.dto.js';
+import { QueryKodeBarangDto } from './dto/query-kode-barang.dto.js';
 
 const MAX_BIGINT = BigInt('9223372036854775807');
 
@@ -25,7 +26,7 @@ export class KodeBarangService {
     if (!/^[1-9]\d{0,18}$/.test(id) || BigInt(id) > MAX_BIGINT) {
       throw new BadRequestException({
         success: false,
-        message: 'ID kode rekening tidak valid',
+        message: 'Kode Rekening Id is not valid',
         data: null,
       });
     }
@@ -87,9 +88,9 @@ export class KodeBarangService {
 
       throw new ConflictException({
         success: false,
-        message: 'Kode rekening masih digunakan oleh data barang',
+        message: 'Kode rekening is still in use in master barang',
         errors: usedIds.map(
-          (id) => `Kode rekening dengan id ${id} masih dipakai`,
+          (id) => `Kode rekening with id ${id} is still in use`,
         ),
         data: null,
       });
@@ -99,7 +100,7 @@ export class KodeBarangService {
   private notFound(): NotFoundException {
     return new NotFoundException({
       success: false,
-      message: 'Data kode rekening tidak ditemukan',
+      message: 'Kode rekening not found',
       data: null,
     });
   }
@@ -119,15 +120,10 @@ export class KodeBarangService {
   }
 
   // Get All Kode Barang
-  async findAll(page = '1', limit = '10', search = '') {
-    const currentPage = Math.min(
-      100000,
-      Math.max(1, Math.floor(Number(page)) || 1),
-    );
-    const pageSize = Math.min(
-      100,
-      Math.max(1, Math.floor(Number(limit)) || 10),
-    );
+  async findAll(query: QueryKodeBarangDto) {
+    const { page = 1, limit = 10, search = '' } = query;
+    const currentPage = Math.min(100000, Math.max(1, Math.floor(page) || 1));
+    const pageSize = Math.min(100, Math.max(1, Math.floor(limit) || 10));
 
     const keyword = (typeof search === 'string' ? search : '')
       .trim()
@@ -167,8 +163,8 @@ export class KodeBarangService {
       success: true,
       message:
         totalItems === 0
-          ? 'Data kode rekening tidak ditemukan'
-          : 'Data kode rekening berhasil diambil',
+          ? 'Kode rekening not found'
+          : 'Kode rekening retrieved successfully',
       data: result.map((item) => this.formatData(item)),
       meta: {
         pagination: {
@@ -191,7 +187,7 @@ export class KodeBarangService {
     if (!kodeValue || !kategoriValue) {
       throw new BadRequestException({
         success: false,
-        message: 'Kode dan kategori wajib diisi',
+        message: 'Kode and kategori are required',
         data: null,
       });
     }
@@ -207,7 +203,7 @@ export class KodeBarangService {
       if (existing && !existing.deletedAt) {
         throw new ConflictException({
           success: false,
-          message: 'Kode rekening sudah digunakan',
+          message: 'Kode rekening is already in use',
           data: null,
         });
       }
@@ -229,8 +225,8 @@ export class KodeBarangService {
       return {
         success: true,
         message: existing
-          ? 'Data kode rekening berhasil dipulihkan'
-          : 'Data kode rekening berhasil ditambahkan',
+          ? 'Kode rekening restored successfully'
+          : 'Kode rekening created successfully',
         data: this.formatData(item),
       };
     } catch (error) {
@@ -238,7 +234,7 @@ export class KodeBarangService {
       if (this.isUniqueViolation(error)) {
         throw new ConflictException({
           success: false,
-          message: 'Kode rekening sudah digunakan',
+          message: 'Kode rekening is already in use',
           data: null,
         });
       }
@@ -254,7 +250,7 @@ export class KodeBarangService {
     if (dto.kode === undefined && dto.kategori === undefined) {
       throw new BadRequestException({
         success: false,
-        message: 'Tidak ada data yang diubah',
+        message: 'No changes were made',
         data: null,
       });
     }
@@ -278,7 +274,7 @@ export class KodeBarangService {
     if (changes.kode === '' || changes.kategori === '') {
       throw new BadRequestException({
         success: false,
-        message: 'Kode dan kategori tidak boleh kosong',
+        message: 'Kode dan kategori must not be empty',
         data: null,
       });
     }
@@ -295,8 +291,8 @@ export class KodeBarangService {
         throw new ConflictException({
           success: false,
           message: holder.deletedAt
-            ? 'Kode rekening sudah dipakai oleh data yang telah dihapus'
-            : 'Kode rekening sudah digunakan',
+            ? 'Kode rekening is already used by a deleted record'
+            : 'Kode rekening is already in use',
           data: null,
         });
       }
@@ -314,7 +310,7 @@ export class KodeBarangService {
 
       return {
         success: true,
-        message: 'Data kode rekening berhasil diperbarui',
+        message: 'Kode rekening updated successfully',
         data: this.formatData(item),
       };
     } catch (error) {
@@ -322,7 +318,7 @@ export class KodeBarangService {
       if (this.isUniqueViolation(error)) {
         throw new ConflictException({
           success: false,
-          message: 'Kode rekening sudah digunakan',
+          message: 'Kode rekening is already in use',
           data: null,
         });
       }
@@ -349,14 +345,14 @@ export class KodeBarangService {
     if (!item) {
       throw new NotFoundException({
         success: false,
-        message: 'Data kode rekening tidak ditemukan',
+        message: 'Kode rekening not found',
         data: null,
       });
     }
 
     return {
       success: true,
-      message: 'Data kode rekening berhasil dihapus',
+      message: 'Kode rekening deleted successfully',
       data: null,
     };
   }
@@ -368,7 +364,7 @@ export class KodeBarangService {
     if (uniqueIds.length === 0) {
       throw new BadRequestException({
         success: false,
-        message: 'Daftar ID tidak boleh kosong',
+        message: 'IDs must not be empty',
         data: null,
       });
     }
@@ -376,43 +372,55 @@ export class KodeBarangService {
     if (uniqueIds.length > 100) {
       throw new BadRequestException({
         success: false,
-        message: 'Maksimal 100 data per penghapusan',
+        message: 'Maximum 100 items per deletion',
         data: null,
       });
     }
 
+    // validasi semua id dulu, supaya satu id tidak valid tidak menghapus sebagian
     const ids = uniqueIds.map((id) => this.parseId(id));
     await this.assertNotUsedByBarang(ids);
     const now = new Date().toISOString();
 
-    const results = await Promise.all(
+    const results = await Promise.allSettled(
       ids.map(async (idBigInt) => {
         const item = await this.model
           .where((row) => row.id.eq(idBigInt))
           .where((row) => row.deletedAt.isNull())
-          .update({
-            deletedAt: now,
-            updatedAt: now,
-          });
+          .update({ deletedAt: now, updatedAt: now });
 
-        return { id: idBigInt.toString(), deleted: item != null };
+        return item != null;
       }),
     );
 
-    const deletedIds = results.filter((r) => r.deleted).map((r) => r.id);
-    const notFoundIds = results.filter((r) => !r.deleted).map((r) => r.id);
+    const deletedIds: string[] = [];
+    const notFoundIds: string[] = [];
+    const failedIds: string[] = [];
+    let firstError: unknown;
+
+    results.forEach((result, index) => {
+      const idString = ids[index].toString();
+
+      if (result.status === 'rejected') {
+        failedIds.push(idString);
+        if (firstError === undefined) firstError = result.reason;
+      } else if (result.value) {
+        deletedIds.push(idString);
+      } else {
+        notFoundIds.push(idString);
+      }
+    });
 
     if (deletedIds.length === 0) {
+      // semua gagal karena error database: jangan disamarkan sebagai 404
+      if (firstError !== undefined) throw firstError;
       throw this.notFound();
     }
 
     return {
       success: true,
-      message: `${deletedIds.length} data kode rekening berhasil dihapus`,
-      data: {
-        deletedIds,
-        notFoundIds,
-      },
+      message: `${deletedIds.length} kode rekening deleted successfully`,
+      data: { deletedIds, notFoundIds, failedIds },
     };
   }
 }
